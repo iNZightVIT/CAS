@@ -6,10 +6,6 @@
 ###
 ###  This file consists of a collection of R function that automatically
 ###  cleans the data, given a CSV file of variable information.
-###
-###  The file to be cleaned ("data2013.csv") is a small subset of
-###  the full 2013 census data, consisting only of responses to questions
-###  corresponding to two categories ("Ethnic" and "Gender").
 
 ###  First, we read in the data. 
 census2013 = read.csv("data2013.csv")[, -1]
