@@ -17,6 +17,8 @@ shiny::runApp()
 ```
 
 <h5> Dev Notes </h5>
+- Write full variable information file for 2015 data (in progress);
+- Write general cleaning function to be sourced from "global.R" (in progress);
 - Pull data from CaS database;
 - If data is discrete, don't group using cut;
 - Docker script: avoid using devtools to install rCharts.
