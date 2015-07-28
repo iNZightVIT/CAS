@@ -1,17 +1,47 @@
-###------------------------------###
-###  Global Functions / Vectors  ###
-###------------------------------###
+###  Global Functions / Values 
 ###
-###  Read in data
+###  Last Modified  :  July 29, 2015.
 
-###  Load labels
-source("clean2013.R")
+###  Global parameters
+col1 = "#5CB8E6"
+col2 = "#F5F5F5"
+exts = c("Scroller", "ColReorder")
+sample.sizes = c("All", "5000", "2000", "1000")
+options(RCHART_LIB = "nvd3")
+
+
+###  Function for handling factors.
+set.factor =
+    function(data, var, lvls) {
+        if (any(var %in% colnames(lvls))) {
+            if (identical(length(var), 1L)) {
+                ii = which(var == colnames(lvls))
+                factor(data, levels = lvls[, ii])
+            } else {
+                for (i in 1:length(var)) {
+                    ii = which(var[i] == colnames(lvls))
+                    if (length(ii > 0))
+                        data[, var[i]] = factor(data[, var[i]],
+                                levels = lvls[, ii])
+                }
+                data
+            }
+        }
+        else
+            if (length(var) == 1) 
+                factor(data)
+            else
+                data
+    }
 
 ###  One way frequency table
-oneway.freq = 
-    function(data, labs = NULL) {
+oneway = 
+    function(data, var, lvls, labs = NULL) {
+        ##  Set factor
+        data.factor = set.factor(data, var, lvls)
+        
         ##  Tabulate
-        data.table = table(factor(data))
+        data.table = table(data.factor)
         data.df1 = data.frame(data.table)
         
         ##  Extract Sums, Percentages
@@ -38,8 +68,10 @@ oneway.freq =
     }
 
 ###  Two way frequency table
-twoway.freq =
-    function(data, labs = NULL) {
+twoway =
+    function(data, var, lvls, labs = NULL) {
+        ##  Set factor
+        data = set.factor(data, var, lvls)
         
         ##  Tabulate
         data.table = table(data)
@@ -95,8 +127,8 @@ load.modules = function(path) {
 
 ###  Selectize Input
 selectize.input =
-    function(inputId, label = NULL, choices, options = NULL,
-             multiple = FALSE) {
+    function(inputId, label = NULL, choices,
+             options = NULL, multiple = FALSE) {
              ## , width = "175px") {
         
         ##  Select Input
@@ -104,44 +136,10 @@ selectize.input =
                        label = label,
                        choices = choices,
                        multiple = multiple,
+                       selected = 1,
                        ## width = width,
                        options = options)
     }
-
-###  dateRangeInput/numericInput wrapper
-dateNum.input =
-    function(inputId, start = NULL, end = NULL, format = "yyyy",
-             startview = "year", value = 1, min = NULL, max = NULL,
-             label = NULL, date = TRUE, numeric = !date) {
-         
-        ##  Diagnostic Check
-        stopifnot(is.character(inputId), is.numeric(value),
-                  is.null(start) || is.numeric(start),
-                  is.null(end) || is.numeric(end),
-                  is.character(format), is.character(startview),
-                  is.null(min) || is.numeric(min),
-                  is.null(max) || is.numeric(max),
-                  is.null(label) || is.character(label),
-                  is.logical(date) && is.logical(numeric))
-         
-        ##  Date Input
-        if (date) 
-            dateRangeInput(inputId = inputId,
-                           label = label,
-                           start = start,
-                           end = end,
-                           format = format,
-                           startview = startview)
-        
-        ##  Numeric Input
-        else
-            numericInput(inputId = inputId,
-                         label = label,
-                         value = value,
-                         min = min,
-                         max = max)
-    }
-
 
 ###  Arguments for tabPanel
 tab.args =
@@ -177,22 +175,133 @@ footer.html =
       </div>
      </div>' 
 
+###  Cleaning Functions
+clean.data =
+    function(data, var) {
+        ##  Input check
+        stopifnot(is.character(data), is.character(var))
+        
+        ##  Function to extract columns.
+        get.var =
+            function(col, lab.ind = "label", data = varInfo) {
+                labs = data[, lab.ind]
+                ii = data[, col]
+                names(ii) = labs
+                ii
+            }
+        
+        ##  Function to truncate numeric variables.
+        truncate =
+            function(x) {
+                x.breaks =
+                    unique(as.integer(seq(0, max(x), length = 6)))
+                cuts =
+                    cut(x, breaks = x.breaks, dig.lab = 10,
+                        include.lowest = TRUE)
+                lvls = levels(cuts)
+                pattern = "^\\[|^\\(|\\]$|\\)$"
+                clean = gsub(",", "-", gsub(pattern, "", lvls))
+                levels(cuts) = clean
+                list(cuts = cuts,
+                     lvls = clean)
+            }
 
-## a = oneway.freq(census2013[, 1])$table
+        ##  Read variable info file and extract relevant columns.
+        varInfo = as.matrix(read.csv(var))
+        vars = get.var("variable")
+        ques = get.var("question", lab.ind = "variable")
+        unit = get.var("unit", lab.ind = "variable")
+        type = get.var("type", lab.ind = "variable")
+
+        ##  Read in relevant data.
+        censusData = read.csv(data)[, vars]
+
+        ##  Column check.
+        if (!all(vars %in% colnames(censusData)))
+            stop("Column names don't match!")
+
+        ##  Label generation.
+        cats = unique(varInfo[, "category"])
+        cat.func = function(x) which(varInfo[, "category"] == x)
+        cat.rows = sapply(cats, cat.func)
+        all.labs = lapply(cat.rows, function(x) vars[x])
+
+        ##  Help and unit strings.
+        help.texts = lapply(cat.rows, function(x) ques[x])
+        unit.texts = lapply(cat.rows, function(x) unit[x])
+
+        ##  Data cleaning
+        clean = function(x) which(is.na(x) | is.null(x) |
+                                   x == "" | x == "NULL")
+        ii = apply(censusData, 2, clean)
+        if (length(ii) > 0) {
+            jj = sort(unique(unlist(ii)))
+            censusData = censusData[-jj, ]
+        }
+        
+        ##  Handle numeric columns
+        which.num = which(type == "float" | type == "integer")
+        if (any(which.num)) {
+            census.df = data.frame(censusData)
+            census.num = census.df[, which.num]
+            census.num = apply(census.num, 2, as.numeric)
+            
+            ##  Wipe negative values.
+            fn.zero = function(x) any(x < 0)
+            ii.zero = apply(census.num, 2, fn.zero)
+            if (any(ii.zero)) {
+                which.zero = which(ii.zero)
+                census.num[, which.zero] =
+                    apply(census.num[, which.zero], 2,
+                          function(x) {
+                              ii = which(x < 0)
+                              x[ii] = 0
+                              x[!ii] = x
+                          })
+            }
+
+            ##  Coerce into integer then truncate.
+            int.trunc = function(x) truncate(as.integer(x))$cuts
+            int.level = function(x) truncate(as.integer(x))$lvls
+            census.lvl = apply(census.num, 2, int.level)
+            census.num = apply(census.num, 2, int.trunc)
+                     
+            ##  Replace.
+            census.df[, which.num] = census.num
+        }
+        ##  Return.
+        list(data = census.df,
+             labs = all.labs,
+             help = help.texts,
+             unit = unit.texts,
+             lvls = census.lvl)
+    }           
+
+###  Clean data
+census2013 = clean.data("data2013.csv", "var2013.csv")
+census2015 = clean.data("data2015.csv", "var2015.csv")
+
+###  Function for pasting.
+name.func = function(x, y, sep = ": ") paste0(x, sep, y)
+
+###  Functions for help texts.
+add.title = function(a) h4(a)
+add.text1 = function(a, b) h5(paste0(a, b))
+add.text2 = function(a, b, c) h5(paste0(a, b, " (", c, ")"))
+
+##  nvd3
+##
+## a = oneway(census2013[, 1])$table
 ## b = data.frame(a)
 ## labs = colnames(b)
 ## form = formula(paste(labs[2], '~', labs[1]))
 ## nPlot(form, data = b, type = "discreteBarChart")
-
-
 ## nPlot(Freq ~ data, data = b, type = "discreteBarChart")
 ## p1 = nPlot(x = "data", y = "Freq", data = b, type = "discreteBarChart")
 ## p1$chart(color = c('#5CB8E6', '#E87F5B'))
 ## p1
-
-## c = twoway.freq(census2013[, 1:2])$table
+## c = twoway(census2013[, 1:2])$table
 ## d = data.frame(c)
-
 ## p2 = nPlot(Freq ~ allergiesdairy, group = "allergieseggs",
 ##       data = d, type = "multiBarChart")
 
