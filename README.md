@@ -19,12 +19,13 @@ shiny::runApp()
 - Potentially allow a snapshot of the app to be downloaded as .Rmd;
 - Explore ways of embedding the entire app within .Rmd;
 - Add help text to (internally) new app;
+- Pull data from CaS database;
+- If data is discrete, don't group using cut;
+- Convert numbers into words for large numbers (perhaps > 10000);
 - ~~Alter reactivity: replace reactive expressions with observers;~~
 - ~~Store all reactive values in one structure;~~
 - ~~Write full variable information file for 2015 data;~~
 - ~~Write general cleaning function to be sourced from "global.R";~~
-- Pull data from CaS database;
-- If data is discrete, don't group using cut;
 - ~~Update census 2013 version (new data cleaning mechanism);~~
 - ~~Send .md outlining cleaning strategy to AC;~~
 - ~~Write script for data cleaning;~~
