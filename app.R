@@ -1,6 +1,6 @@
 ###  Census Viewer
 ###
-###  Last Modified  :  July 28, 2015
+###  Last Modified  :  July 29, 2015.
 
 ###  Load required packages and global script.
 library(DT)
@@ -10,8 +10,7 @@ source("global.R")
 
 ###  Server.
 server =
-    function(input, output, session) {
-        
+    function(input, output, session) {        
         ##  Store reactive values.
         vals = reactiveValues()
 
@@ -37,12 +36,23 @@ server =
                 vals$data = inputData$data
                 vals$help = inputData$help
                 vals$unit = inputData$unit
+                vals$lvls = inputData$lvls
                 vals$nrow = nrow(inputData$data)
             }
         })
-
-        ##  Sample data.
+      
+        ##  Variable handler.
         observe({
+            input$vars
+            if (check.input(input$vars)) 
+                vals$vars = input$vars            
+            else 
+                vals$vars = ""            
+        })
+        
+        ##  Set data, groups, labels, and frequencies.
+        observe({
+            input$vars
             input$sample
             if (check.input(input$sample)) {
                 if (identical(input$sample, "All"))
@@ -54,45 +64,36 @@ server =
                                as.numeric(input$sample))
                 vals$subs = vals$data[vals$samp, ]
             }
-        })
-        
-        ##  Variable handler.
-        observe({
-            input$vars
-            if (check.input(input$vars)) 
-                vals$vars = input$vars            
-            else 
-                vals$vars = ""            
-        })
-        
-        ##  Set groups, labels, and frequencies.
-        observe({
-            input$vars
-            if (check.input(input$vars) & all(vals$vars != "")) {
-                n = length(input$vars)
-                g.buf = l.buf = character(n)
-                x.any = function(x, y = input$vars) any(x == y[i])
-                for (i in seq_len(n)) {
-                    var = sapply(vals$all.labs, x.any)
-                    grp = names(which(var))
-                    sub = vals$all.labs[[grp]]
-                    ind = which(sub == input$vars[i])
-                    lab = names(sub)[[ind]]
-                    g.buf[i] = grp
-                    l.buf[i] = lab
+            isolate({
+                if (check.input(input$vars) & all(vals$vars != "")) {
+                    n = length(input$vars)
+                    g.buf = l.buf = character(n)
+                    x.any = function(x, y = input$vars) any(x == y[i])
+                    for (i in seq_len(n)) {
+                        var = sapply(vals$all.labs, x.any)
+                        grp = names(which(var))
+                        sub = vals$all.labs[[grp]]
+                        ind = which(sub == input$vars[i])
+                        lab = names(sub)[[ind]]
+                        g.buf[i] = grp
+                        l.buf[i] = lab
+                    }
+                    
+                    ##  Assignment and subsetting.
+                    vals$grps = g.buf
+                    vals$labs = l.buf
+                    vals$cols = vals$subs[, input$vars]
+                    
+                    ##  Frequency data.
+                    if (identical(length(input$vars), 1L)) 
+                        vals$freq = oneway(vals$cols, input$vars,
+                                           vals$lvls, vals$labs)
+                    else                     
+                        vals$freq = twoway(vals$cols, input$vars,
+                                           vals$lvls, vals$labs)
+                    
                 }
-
-                ##  Assignment and subsetting.
-                vals$grps = g.buf
-                vals$labs = l.buf
-                vals$cols = vals$subs[, input$vars]
-                
-                ##  Frequency data.
-                if (identical(length(input$vars), 1L)) 
-                    vals$freq = oneway(vals$cols, vals$labs)
-                else                     
-                    vals$freq = twoway(vals$cols, vals$labs)
-            }
+            })
         })
         
         
@@ -101,7 +102,7 @@ server =
             selectizeInput(inputId = "vars",
                            label = NULL,
                            multiple = TRUE,
-                           selected = "gender",
+                           ## selected = "gender",
                            options = list(maxItems = 2),
                            choices = vals$all.labs)
         })        
@@ -167,9 +168,7 @@ server =
             ##  Formula
             form = formula(name.func(name[nvar + 1], name[1], " ~ "))
             
-            ##  Plot
-            ##
-            ##  This "plot.width" is dirty..but does the job.
+            ##  Draw
             plot.width = session$clientData[["output_plot1_width"]]
             if (identical(nvar, 1L)) {
                 p1 <<- nPlot(form,
@@ -190,7 +189,73 @@ server =
                 p2
             }
         })
-        
+
+
+        ##  Table Help
+        output$tableHelp = renderUI({
+            input$vars
+            
+            ##  Check
+            validate(
+                need(try(length(input$vars) >= 1),
+                     "\nPlease select a variable to create a table."))
+
+            ##  Extract parameters
+            unit = vals$unit
+            help = vals$help
+            grps = vals$grps
+            labs = vals$labs
+            vars = input$vars
+
+            ##  Check
+            pars = list(unit, help, grps, labs, vars)
+            appl = lapply(pars, function(x) !is.null(x))
+            
+            if (all(unlist(appl))) {
+                ##  Add text
+                if (identical(length(input$vars), 1L)) {
+                    title = add.title("One-way Table of Counts")
+                    quest = add.text1("Question: ", help[[grps]][vars])
+                    vals$group = add.text1("Category: ", grps)
+                    vals$units = add.text2("Variable: ", labs,
+                        unit[[grps]][vars])
+                    HTML(paste(title, "<hr>",
+                               quest, vals$group, vals$units), "<br>")
+                } else {
+                    title = add.title("Two-way Table of Counts")
+                    quest1 = add.text1("Question 1: ",
+                        help[[grps[1]]][vars[1]])
+                    vals$group1 = add.text1("Category 1: ", grps[1])
+                    vals$units1 = add.text2("Variable 1: ", labs[1],
+                        unit[[grps[1]]][vars[1]])
+                    quest2 = add.text1("Question 2: ",
+                        help[[grps[2]]][vars[2]])
+                    vals$group2 = add.text1("Category 2: ", grps[2])
+                    vals$units2 = add.text2("Variable 2: ", labs[2],
+                        unit[[grps[2]]][vars[2]])
+                    HTML(paste(title, "<hr>",
+                               quest1, vals$group1, vals$units1, "<br>",
+                               quest2, vals$group2, vals$units2, "<br>"))
+                }
+            }
+        })
+
+        ##  Plot Help
+        output$plotHelp = renderUI({
+            validate(
+                need(try(length(input$vars) >= 1),
+                     "\nPlease select a variable create a plot."))
+            title = add.title("Bar Plot")
+            if (identical(length(input$vars), 1L)) 
+                HTML(paste(title, "<hr>",
+                           vals$group, vals$units, "<br>"))
+            else
+                HTML(paste(title, "<hr>",
+                           vals$group1, vals$units1, "<br>",
+                           vals$group2, vals$units2, "<br>"))
+        })                
+       
+        ##  Download
         output$downloadFile = downloadHandler(
             filename = function(x) paste0(input$data, ".csv"),
             content = function(file) write.csv(vals$cols, file))
@@ -207,8 +272,8 @@ ui =
                    h5(helpText("Data Set:")),                   
                    selectize.input(inputId = "data",
                                    choices =
-                                       c("Census 2013",
-                                         "Census 2015")),
+                                       c("Census 2015",
+                                         "Census 2013")),
                    h5(helpText("Sample Size:")),                   
                    selectize.input(inputId = "sample",
                                    choices = sample.sizes),
@@ -220,19 +285,20 @@ ui =
                tabsetPanel(
                    tabPanel("Table",
                             br(),
+                            uiOutput("tableHelp"),
                             DT::dataTableOutput(outputId = "table",
                                                 width = "100%",
                                                 height = "auto")),
                    tabPanel("Plot",
                             br(),
+                            uiOutput("plotHelp"),
                             showOutput("barplot", "nvd3"),
                             plotOutput("plot1", height = 0))
                    )
                )
-        ) 
+        )
 
-
-
+###  Call app.
 shinyApp(ui, server)
 
 

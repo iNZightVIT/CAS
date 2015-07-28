@@ -1,7 +1,7 @@
-###----------------------------###
-###  Global Functions / Values ###
-###----------------------------###
+###  Global Functions / Values 
 ###
+###  Last Modified  :  July 29, 2015.
+
 ###  Global parameters
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
@@ -9,11 +9,39 @@ exts = c("Scroller", "ColReorder")
 sample.sizes = c("All", "5000", "2000", "1000")
 options(RCHART_LIB = "nvd3")
 
+
+###  Function for handling factors.
+set.factor =
+    function(data, var, lvls) {
+        if (any(var %in% colnames(lvls))) {
+            if (identical(length(var), 1L)) {
+                ii = which(var == colnames(lvls))
+                factor(data, levels = lvls[, ii])
+            } else {
+                for (i in 1:length(var)) {
+                    ii = which(var[i] == colnames(lvls))
+                    if (length(ii > 0))
+                        data[, var[i]] = factor(data[, var[i]],
+                                levels = lvls[, ii])
+                }
+                data
+            }
+        }
+        else
+            if (length(var) == 1) 
+                factor(data)
+            else
+                data
+    }
+
 ###  One way frequency table
 oneway = 
-    function(data, labs = NULL) {
+    function(data, var, lvls, labs = NULL) {
+        ##  Set factor
+        data.factor = set.factor(data, var, lvls)
+        
         ##  Tabulate
-        data.table = table(factor(data))
+        data.table = table(data.factor)
         data.df1 = data.frame(data.table)
         
         ##  Extract Sums, Percentages
@@ -41,7 +69,9 @@ oneway =
 
 ###  Two way frequency table
 twoway =
-    function(data, labs = NULL) {
+    function(data, var, lvls, labs = NULL) {
+        ##  Set factor
+        data = set.factor(data, var, lvls)
         
         ##  Tabulate
         data.table = table(data)
@@ -172,7 +202,8 @@ clean.data =
                 pattern = "^\\[|^\\(|\\]$|\\)$"
                 clean = gsub(",", "-", gsub(pattern, "", lvls))
                 levels(cuts) = clean
-                cuts
+                list(cuts = cuts,
+                     lvls = clean)
             }
 
         ##  Read variable info file and extract relevant columns.
@@ -230,9 +261,11 @@ clean.data =
             }
 
             ##  Coerce into integer then truncate.
-            int.trunc = function(x) truncate(as.integer(x))
+            int.trunc = function(x) truncate(as.integer(x))$cuts
+            int.level = function(x) truncate(as.integer(x))$lvls
+            census.lvl = apply(census.num, 2, int.level)
             census.num = apply(census.num, 2, int.trunc)
-
+                     
             ##  Replace.
             census.df[, which.num] = census.num
         }
@@ -240,16 +273,21 @@ clean.data =
         list(data = census.df,
              labs = all.labs,
              help = help.texts,
-             unit = unit.texts)
+             unit = unit.texts,
+             lvls = census.lvl)
     }           
 
+###  Clean data
 census2013 = clean.data("data2013.csv", "var2013.csv")
 census2015 = clean.data("data2015.csv", "var2015.csv")
 
-
-
-
+###  Function for pasting.
 name.func = function(x, y, sep = ": ") paste0(x, sep, y)
+
+###  Functions for help texts.
+add.title = function(a) h4(a)
+add.text1 = function(a, b) h5(paste0(a, b))
+add.text2 = function(a, b, c) h5(paste0(a, b, " (", c, ")"))
 
 ##  nvd3
 ##
