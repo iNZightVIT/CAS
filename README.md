@@ -15,13 +15,14 @@ install.packages("DT")
 ###  the directory in which you extracted the file. Then try running:
 shiny::runApp()
 ```
+
 <h5> Dev Notes </h5>
 - Potentially allow a snapshot of the app to be downloaded as .Rmd;
-- Explore ways of embedding the entire app within .Rmd;
-- Add help text to (internally) new app;
-- Pull data from CaS database;
-- If data is discrete, don't group using cut;
+- Pull data directly from CaS database;
+- If data is of type "discrete", don't group using cut;
 - Convert numbers into words for large numbers (perhaps > 10000);
+- ~~Fix factor level sorting bug;~~
+- ~~Add reactive help text to (internally) redesigned app;~~
 - ~~Alter reactivity: replace reactive expressions with observers;~~
 - ~~Store all reactive values in one structure;~~
 - ~~Write full variable information file for 2015 data;~~
