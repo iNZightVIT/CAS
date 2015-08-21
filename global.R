@@ -1,6 +1,6 @@
 ###  Global Functions / Values 
 ###
-###  Last Modified  :  July 29, 2015.
+###  Last Modified  :  August 21, 2015.
 
 ###  Global parameters
 col1 = "#5CB8E6"

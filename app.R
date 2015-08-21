@@ -1,6 +1,6 @@
 ###  Census Viewer
 ###
-###  Last Modified  :  July 29, 2015.
+###  Last Modified  :  August 21, 2015.
 
 ###  Load required packages and global script.
 library(DT)
