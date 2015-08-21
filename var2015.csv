@@ -3,18 +3,18 @@ gender,General,Gender,categorical,Male/Female,What is your gender?
 age,General,Age,integer,Age,What is your age?
 languages,General,Languages,integer,Number of Languages,In how many languages can you hold a conversation about a lot of every day things?
 handed,Physical,Handed,categorical,Right/Left/Ambidextrous,"Are you right-handed, left-handed, or ambidextrous?"
-height,Physical,Height,integer,Centimeters,What is your height (nearest cm)?
-rightfoot,Physical,Right Foot,integer,Centimeters,"What is the length of your right foot, without a shoe (nearest cm)?"
-neck,Physical,Neck,integer,Centimeters,What is the circumference of your neck (nearest cm)?
-armspan,Physical,Arm Span,integer,Centimeters,What is your arm span (nearest cm)?
-wrist,Physical,Wrist,integer,Centimeters,What is the circumference of your left wrist (nearest cm)?
-indexfinger,Physical,Index Finger,integer,Milimeters,What is the length of your left index finger (nearest mm)?
-ringfinger,Physical,Ring Finger,integer,Milimeters,What is the length of your left ring finger (nearest mm)?
-standleftleg,Physical,,integer,Seconds,How long can you stand on your left leg with your eyes closed (nearest second)?
-popliteal,Physical,Popliteal,integer,Centimeters,What is your popliteal length (nearest cm)?
+height,Physical,Height,integer,Centimetres,What is your height (nearest cm)?
+rightfoot,Physical,Right Foot,integer,Centimetres,"What is the length of your right foot, without a shoe (nearest cm)?"
+neck,Physical,Neck,integer,Centimetres,What is the circumference of your neck (nearest cm)?
+armspan,Physical,Arm Span,integer,Centimetres,What is your arm span (nearest cm)?
+wrist,Physical,Wrist,integer,Centimetres,What is the circumference of your left wrist (nearest cm)?
+indexfinger,Physical,Index Finger,integer,Millimetres,What is the length of your left index finger (nearest mm)?
+ringfinger,Physical,Ring Finger,integer,Millimetres,What is the length of your left ring finger (nearest mm)?
+standleftleg,Physical,Left Leg Stand,integer,Seconds,How long can you stand on your left leg with your eyes closed (nearest second)?
+popliteal,Physical,Popliteal,integer,Centimetres,What is your popliteal length (nearest cm)?
 reaction,Physical,Reaction,integer,Seconds,How fast is your reaction time (nearest second)?
 memory,Physical,Memory,integer,Seconds,How quickly can you match all the pairs of pictures in the memory test (nearest second)?
-favlearning,Other,Favourite Learning,categorical,Favourite Learning Area,What is your favourite learning area?
+favlearning,Other,Fav. Learning,categorical,Favourite Learning Area,What is your favourite learning area?
 travel,Other,Transport,categorical,Means of Transport,What is the main way you usually get to school?
 techtv,Technology,TV,categorical,Yes/No,Do you have a TV?
 techmp3,Technology,MP3,categorical,Yes/No,Do you have an mp3 player?
@@ -24,7 +24,7 @@ techfacebook,Technology,Facebook,categorical,Yes/No,Do you have a Facebook accou
 techtwitter,Technology,Twitter,categorical,Yes/No,Do you have a Twitter account?
 techbebo,Technology,Bebo,categorical,Yes/No,Do you have a Bebo account?
 techmyspace,Technology,MySpace,categorical,Yes/No,Do you have a MySpace account?
-techskype,Technology,Skype,categorical,Yes/No,Do you have a Skype acocunt?
+techskype,Technology,Skype,categorical,Yes/No,Do you have a Skype account?
 techconsole,Technology,Console,categorical,Yes/No,Do you have a gaming console?
 techgoogleplus,Technology,Google Plus,categorical,Yes/No,Do you have a Google Plus account?
 techinstagram,Technology,Instagram,categorical,Yes/No,Do you have an instagram account?
@@ -37,24 +37,24 @@ techtumblr,Technology,Tumblr,categorical,Yes/No,Do you have a Tumblr account?
 techwhatsapp,Technology,WhatsApp,categorical,Yes/No,Do you have a Whatsapp account?
 techvine,Technology,Vine,categorical,Yes/No,Do you have a Vine account?
 technone,Technology,None,categorical,Yes/No,I don't use any of the forms of technology listed.
-ethniceng,Ethnic,New European,categorical,Yes/No,Which ethnic group do you belong to?
-ethnicmri,Ethnic,Maori,categorical,Yes/No,Which ethnic group do you belong to?
+ethniceng,Ethnic,NZ European,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicmri,Ethnic,Māori,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicwsm,Ethnic,Samoan,categorical,Yes/No,Which ethnic group do you belong to?
 ethniccok,Ethnic,Cook Island,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicton,Ethnic,Tongan,categorical,Yes/No,Which ethnic group do you belong to?
-ethnicniu,Ethnic,Nieuean,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicniu,Ethnic,Niuean,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicchn,Ethnic,Chinese,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicind,Ethnic,Indian,categorical,Yes/No,Which ethnic group do you belong to?
 bagweight,Bag,Weight,float,Kilograms,What is the weight of your school bag?
-importcomputer,Importance,Computer,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is owning a computer to you?"
-importenergy,Importance,Energy,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is conserving energy to you?"
-importgovern,Importance,Government,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is a stable government to you?"
-importhomework,Importance,Homework,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is doing homework to you?"
-importwarm,Importance,Global Warming,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is global warming to you?"
-importlifestyle,Importance,Lifestyle,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is a healthy lifestyle to you?"
-importpollution,Importance,Pollution,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is reducing pollution to you?"
-importrecycling,Importance,Recycling,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is recycling rubbish to you?"
-importwater,Importance,Water,integer,Scale of 0-100,"On a scale of 0 to 100, how importance is conserving water to you?"
+importcomputer,Importance,Computer,integer,Scale of 0-100,"On a scale of 0 to 100, How important is owning a computer to you?"
+importenergy,Importance,Energy,integer,Scale of 0-100,"On a scale of 0 to 100, How important is conserving energy to you?"
+importgovern,Importance,Government,integer,Scale of 0-100,"On a scale of 0 to 100, How important is a stable government to you?"
+importhomework,Importance,Homework,integer,Scale of 0-100,"On a scale of 0 to 100, How important is doing homework to you?"
+importwarm,Importance,Global Warming,integer,Scale of 0-100,"On a scale of 0 to 100, How important is global warming to you?"
+importlifestyle,Importance,Lifestyle,integer,Scale of 0-100,"On a scale of 0 to 100, How important is a healthy lifestyle to you?"
+importpollution,Importance,Pollution,integer,Scale of 0-100,"On a scale of 0 to 100, How important is reducing pollution to you?"
+importrecycling,Importance,Recycling,integer,Scale of 0-100,"On a scale of 0 to 100, How important is recycling rubbish to you?"
+importwater,Importance,Water,integer,Scale of 0-100,"On a scale of 0 to 100, How important is conserving water to you?"
 timetravel,Time,Travel Time,integer,Means of Travel,What is the main way you usually get to school?
 timetaken,Time,Time Taken,integer,Minutes,How long does it take you to get to school (nearest minute)?
 cellmonths,Cell Phone,Months,integer,Months,How long have you had your current cell phone for?

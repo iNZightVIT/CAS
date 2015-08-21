@@ -121,13 +121,14 @@ server =
                 style = "bootstrap",
                 extensions = exts,
                 rownames = TRUE,
+                selection = "none",
                 options = list(
                     initComplete = JS(
                         "function(settings, json) {",
                         "$(this.api().table().header()).css(
-                       {'background-color': '#F5F5F5',
-                        'color': '#4A4A4A',
-                        'font-weight': 'bold'});",
+                        {'background-color': '#F5F5F5',
+                         'color': '#4A4A4A',
+                         'font-weight': 'bold'});",
                         "}"),                    
                     pageLength = 3,
                     autowidth = FALSE,
@@ -190,69 +191,70 @@ server =
             }
         })
 
+        ##  Help Text
+        help.text =
+            function(x, tab = TRUE) {
+                ##  Set up appropriate descriptions.
+                text = ifelse(tab, "table.", "plot.")
+                desc1 = ifelse(tab, "One-way Table of Counts", "One-variable Bar Plot")
+                desc2 = ifelse(tab, "Two-way Table of Counts", "Two-variable Bar Plot")
+                
+                ##  Check 1.
+                validate(
+                    need(try(length(x) >= 1),
+                         paste0("\nPlease select a variable to create a ", text)))
 
+                ##  Extract parameters.
+                unit = vals$unit
+                help = vals$help
+                grps = vals$grps
+                labs = vals$labs
+                vars = input$vars
+                
+                ##  Check 2.
+                pars = list(unit, help, grps, labs, vars)
+                appl = lapply(pars, function(x) !is.null(x))
+
+                ##  Begin adding help text.
+                if (all(unlist(appl))) {
+                    ##  Add text
+                    if (identical(length(input$vars), 1L)) {
+                        title = add.title(desc1)
+                        quest = add.text1("Question: ", help[[grps]][vars])
+                        vals$group = add.text1("Category: ", grps)
+                        vals$units = add.text2("Variable: ", labs,
+                            unit[[grps]][vars])
+                        HTML(paste(title, "<hr>",
+                                   quest, vals$group, vals$units), "<br>")
+                    } else {
+                        title = add.title(desc2)
+                        quest1 = add.text1("Question 1: ",
+                            help[[grps[1]]][vars[1]])
+                        vals$group1 = add.text1("Category 1: ", grps[1])
+                        vals$units1 = add.text2("Variable 1: ", labs[1],
+                            unit[[grps[1]]][vars[1]])
+                        quest2 = add.text1("Question 2: ",
+                            help[[grps[2]]][vars[2]])
+                        vals$group2 = add.text1("Category 2: ", grps[2])
+                        vals$units2 = add.text2("Variable 2: ", labs[2],
+                            unit[[grps[2]]][vars[2]])
+                        HTML(paste(title, "<hr>",
+                                   quest1, vals$group1, vals$units1, "<br>",
+                                   quest2, vals$group2, vals$units2, "<br>"))
+                    }
+                }
+            }
+        
         ##  Table Help
         output$tableHelp = renderUI({
             input$vars
-            
-            ##  Check
-            validate(
-                need(try(length(input$vars) >= 1),
-                     "\nPlease select a variable to create a table."))
-
-            ##  Extract parameters
-            unit = vals$unit
-            help = vals$help
-            grps = vals$grps
-            labs = vals$labs
-            vars = input$vars
-
-            ##  Check
-            pars = list(unit, help, grps, labs, vars)
-            appl = lapply(pars, function(x) !is.null(x))
-            
-            if (all(unlist(appl))) {
-                ##  Add text
-                if (identical(length(input$vars), 1L)) {
-                    title = add.title("One-way Table of Counts")
-                    quest = add.text1("Question: ", help[[grps]][vars])
-                    vals$group = add.text1("Category: ", grps)
-                    vals$units = add.text2("Variable: ", labs,
-                        unit[[grps]][vars])
-                    HTML(paste(title, "<hr>",
-                               quest, vals$group, vals$units), "<br>")
-                } else {
-                    title = add.title("Two-way Table of Counts")
-                    quest1 = add.text1("Question 1: ",
-                        help[[grps[1]]][vars[1]])
-                    vals$group1 = add.text1("Category 1: ", grps[1])
-                    vals$units1 = add.text2("Variable 1: ", labs[1],
-                        unit[[grps[1]]][vars[1]])
-                    quest2 = add.text1("Question 2: ",
-                        help[[grps[2]]][vars[2]])
-                    vals$group2 = add.text1("Category 2: ", grps[2])
-                    vals$units2 = add.text2("Variable 2: ", labs[2],
-                        unit[[grps[2]]][vars[2]])
-                    HTML(paste(title, "<hr>",
-                               quest1, vals$group1, vals$units1, "<br>",
-                               quest2, vals$group2, vals$units2, "<br>"))
-                }
-            }
+            help.text(input$vars)
         })
 
         ##  Plot Help
         output$plotHelp = renderUI({
-            validate(
-                need(try(length(input$vars) >= 1),
-                     "\nPlease select a variable create a plot."))
-            title = add.title("Bar Plot")
-            if (identical(length(input$vars), 1L)) 
-                HTML(paste(title, "<hr>",
-                           vals$group, vals$units, "<br>"))
-            else
-                HTML(paste(title, "<hr>",
-                           vals$group1, vals$units1, "<br>",
-                           vals$group2, vals$units2, "<br>"))
+            input$vars
+            help.text(input$vars, tab = FALSE)
         })                
        
         ##  Download

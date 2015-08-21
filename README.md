@@ -1,5 +1,5 @@
-<h4> Census Viewer (New version)</h4>
-<h5> Last Updated: July 29, 2015. </h5>
+<h4> Census Viewer </h4>
+<h5> Last Updated: August 21, 2015. </h5>
 
 This git repository hosts a simple RShiny application that displays a table of counts and a side-by-side bar chart based on census data from secondary schools around New Zealand (currently only the 2013 data; 2015 data coming soon). To test the app, try running the following in R:
 
@@ -17,8 +17,8 @@ shiny::runApp()
 ```
 
 <h5> Dev Notes </h5>
-- Potentially allow a snapshot of the app to be downloaded as .Rmd;
-- Pull data directly from CaS database;
+- Work on valid points from the Merriman list;
+- Rob Carter working on sidestepping network firewall;
 - If data is of type "discrete", don't group using cut;
 - Convert numbers into words for large numbers (perhaps > 10000);
 - ~~Fix factor level sorting bug;~~
