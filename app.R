@@ -1,6 +1,6 @@
 ###  Census Viewer
 ###
-###  Last Modified  :  August 21, 2015.
+###  Last Modified  :  August 31, 2015.
 
 ###  Load required packages and global script.
 library(DT)
@@ -30,17 +30,19 @@ server =
             if (check.input(input$data)) {
                 inputData =
                     switch(input$data,
-                           "Census 2015" = census2015,
-                           "Census 2013" = census2013)
+                           "2015" = census2015,
+                           "2013" = census2013)
                 vals$all.labs = inputData$labs
                 vals$data = inputData$data
                 vals$help = inputData$help
                 vals$unit = inputData$unit
                 vals$lvls = inputData$lvls
+                vals$type = inputData$type
                 vals$nrow = nrow(inputData$data)
+                vals$xlsx = inputData$data[, input$vars]
             }
         })
-      
+                
         ##  Variable handler.
         observe({
             input$vars
@@ -83,15 +85,16 @@ server =
                     vals$grps = g.buf
                     vals$labs = l.buf
                     vals$cols = vals$subs[, input$vars]
+                    vals$lvls = vals$lvls[input$vars]
+                    vals$type = vals$type[input$type]
                     
                     ##  Frequency data.
                     if (identical(length(input$vars), 1L)) 
                         vals$freq = oneway(vals$cols, input$vars,
-                                           vals$lvls, vals$labs)
+                                           vals$lvls, vals$type, vals$labs)
                     else                     
                         vals$freq = twoway(vals$cols, input$vars,
-                                           vals$lvls, vals$labs)
-                    
+                                           vals$lvls, vals$type, vals$labs)
                 }
             })
         })
@@ -134,7 +137,7 @@ server =
                     autowidth = FALSE,
                     deferRender = TRUE,
                     scrollCollapse = TRUE,
-                    scrollY = 200,
+                    scrollY = 400,
                     colReorder = list(realtime = TRUE),
                     dom = 'T<"clear">rRtS')
                 ) %>%                
@@ -256,11 +259,20 @@ server =
             input$vars
             help.text(input$vars, tab = FALSE)
         })                
-       
-        ##  Download
-        output$downloadFile = downloadHandler(
+
+        ##  Edit column name for DL single-variable table.
+        observe({
+            input$vars
+            if (identical(length(input$vars), 1L)) {
+                vals$xlsx = cbind(vals$xlsx)
+                colnames(vals$xlsx) = input$vars
+            }
+        })
+        
+        ##  Download        
+        output$downloadFile = downloadHandler(            
             filename = function(x) paste0(input$data, ".csv"),
-            content = function(file) write.csv(vals$cols, file))
+            content = function(file) write.csv(vals$xlsx, file, row.names = FALSE))
     }
 
 ##  User Interface.
@@ -268,14 +280,15 @@ ui =
     fluidPage(
         titlePanel("Census Viewer"),
         theme = "cosmo.css",
+        responsive = FALSE,
         column(width = 2,
                br(),
                wellPanel(
                    h5(helpText("Data Set:")),                   
                    selectize.input(inputId = "data",
                                    choices =
-                                       c("Census 2015",
-                                         "Census 2013")),
+                                       c("2015",
+                                         "2013")),
                    h5(helpText("Sample Size:")),                   
                    selectize.input(inputId = "sample",
                                    choices = sample.sizes),
