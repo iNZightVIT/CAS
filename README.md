@@ -1,5 +1,5 @@
 <h4> Census Viewer </h4>
-<h5> Last Updated: August 21, 2015. </h5>
+<h5> Last Updated: September 14, 2015. </h5>
 
 This git repository hosts a simple RShiny application that displays a table of counts and a side-by-side bar chart based on census data from secondary schools around New Zealand (currently only the 2013 data; 2015 data coming soon). To test the app, try running the following in R:
 
