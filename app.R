@@ -1,20 +1,29 @@
 ###  Census Viewer
 ###
-###  Last Modified  :  August 31, 2015.
+###  Last Modified  :  September 26, 2015.
 
-###  Load required packages and global script.
+###  Load the required packages and utility functions.
 library(DT)
-library(shiny)
+library(markdown)
 library(rCharts)
+library(shiny)
 source("global.R")
 
-###  Server.
+###  Set global parameters.
+col1 = "#5CB8E6"
+col2 = "#F5F5F5"
+exts = c("Scroller", "ColReorder")
+sample.sizes = c("All", "5000", "2000", "1000")
+options(RCHART_LIB = "nvd3", shiny.deprecation.messages = FALSE)
+
+###  Set up the server function. Note use of the explicit definition of
+###  the "session" argument for the download handler.
 server =
     function(input, output, session) {        
-        ##  Store reactive values.
+        ##  Dynamic container in which to store reactive values.
         vals = reactiveValues()
 
-        ##  Input check.
+        ##  Basic input check.
         check.input =
             function(input) {
                 wipe = function(x) !(is.na(x) & is.null(x))
@@ -24,7 +33,8 @@ server =
                     FALSE
             }
         
-        ##  Set reactive values and select data set.
+        ##  Set reactive values and set up data switch mechanism.
+        ##  Further data to be added, as appropriate.
         observe({
             input$data
             if (check.input(input$data)) {
@@ -42,7 +52,7 @@ server =
                 vals$xlsx = inputData$data[, input$vars]
             }
         })
-                
+        
         ##  Variable handler.
         observe({
             input$vars
@@ -56,6 +66,8 @@ server =
         observe({
             input$vars
             input$sample
+            
+            ##  Sampling.
             if (check.input(input$sample)) {
                 if (identical(input$sample, "All"))
                     vals$samp =
@@ -66,6 +78,8 @@ server =
                                as.numeric(input$sample))
                 vals$subs = vals$data[vals$samp, ]
             }
+
+            ##  Grouping.
             isolate({
                 if (check.input(input$vars) & all(vals$vars != "")) {
                     n = length(input$vars)
@@ -88,13 +102,16 @@ server =
                     vals$lvls = vals$lvls[input$vars]
                     vals$type = vals$type[input$type]
                     
-                    ##  Frequency data.
+                    ##  Determine frequency form. Note the use of the explicit
+                    ##  integer suffix so we can match the length of input$vars
+                    ##  exactly. The 4 byte save in memory is a bonus (at the
+                    ##  expense of readability of course).
                     if (identical(length(input$vars), 1L)) 
                         vals$freq = oneway(vals$cols, input$vars,
-                                           vals$lvls, vals$type, vals$labs)
+                            vals$lvls, vals$type, vals$labs)
                     else                     
                         vals$freq = twoway(vals$cols, input$vars,
-                                           vals$lvls, vals$type, vals$labs)
+                            vals$lvls, vals$type, vals$labs)
                 }
             })
         })
@@ -116,6 +133,17 @@ server =
         })
         
         ##  Table
+        ##
+        ##  While the code looks somewhat complex, it is simply a list of
+        ##  arguments to a single function ("renderDataTable") to customize
+        ##  the way it displays data. The code wrapped by the "JS" function
+        ##  and in quotes is written in Javascript.
+        ##
+        ##  The empty string in the first argument of "formatStyle" is a dirty
+        ##  hack to force the table to look like a frequency table, as opposed
+        ##  to a table of raw data (exploiting the fact that the (1, 1)-th cell
+        ##  has no name, i.e. the name is empty). Feel free to change this
+        ##  if you can come up with a better way...
         output$table = renderDataTable({
             validate(need(try(length(input$vars) >= 1), ""))
             DT::datatable(
@@ -149,6 +177,8 @@ server =
         
         ##  Plot
         output$barplot = renderChart({
+            
+            ##  Basic input check.
             freq = vals$freq$alt.data
             validate(need(try(length(input$vars) >= 1), ""))
             validate(need(try(!is.null(freq)), ""))
@@ -157,23 +187,28 @@ server =
             name = names(freq)
             labs = vals$labs                        
             
-            ##  Length
+            ##  Loop through 'nvar' to assign appropriate names.
             nvar = length(input$vars)
-
-            ##  Loop
             for (i in seq_len(nvar)) {
                 if (ncol(freq) < 7 & nchar(labs[i] < 12))
                     freq[, i] = name.func(labs[i], freq[, i])
                 else
                     freq[, i] = name.func(substring(labs[i], 1, 11),
-                                          freq[, i])
+                            freq[, i])
             }
             
-            ##  Formula
+            ##  Set formula.
             form = formula(name.func(name[nvar + 1], name[1], " ~ "))
             
-            ##  Draw
+            ##  Draw plots.
+            ##
+            ##  A dirty hack is used here to force the plot to fit in the 
+            ##  plot window (since it occupies the whole screen by default).
+            ##  It is set to take on the width of an "empty plot" of height
+            ##  zero (but suitable width).            
             plot.width = session$clientData[["output_plot1_width"]]
+
+            ##  Please forgive me for the L's.
             if (identical(nvar, 1L)) {
                 p1 <<- nPlot(form,
                              data = freq,
@@ -195,6 +230,10 @@ server =
         })
 
         ##  Help Text
+        ##
+        ##  This one's a bit of a beast...You can re-do the whole thing if you
+        ##  feel strongly about it. At the end of the day, all it does is
+        ##  display appropriate text above either the plot or table.
         help.text =
             function(x, tab = TRUE) {
                 ##  Set up appropriate descriptions.
@@ -260,7 +299,7 @@ server =
             help.text(input$vars, tab = FALSE)
         })                
 
-        ##  Edit column name for DL single-variable table.
+        ##  Edit column name for the single-variable xlsx table.
         observe({
             input$vars
             if (identical(length(input$vars), 1L)) {
@@ -275,7 +314,7 @@ server =
             content = function(file) write.csv(vals$xlsx, file, row.names = FALSE))
     }
 
-##  User Interface.
+##  Set up the user interface. This part is trivial.
 ui =
     fluidPage(
         titlePanel("Census Viewer"),
@@ -293,9 +332,10 @@ ui =
                    selectize.input(inputId = "sample",
                                    choices = sample.sizes),
                    h5(helpText("Select variable(s):")),           
-                   uiOutput("vars"),
-                   downloadLink("downloadFile", h5("Download Data")))),
-               column(width = 10,
+                   uiOutput("vars"),                   
+                   downloadLink("downloadFile", h5("Download Data")),
+                   modal.help("Help", "Census Viewer"))),
+        column(width = 10,
                br(),
                tabsetPanel(
                    tabPanel("Table",

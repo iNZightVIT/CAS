@@ -1,13 +1,6 @@
 ###  Global Functions / Values 
 ###
-###  Last Modified  :  August 31, 2015.
-
-###  Global parameters
-col1 = "#5CB8E6"
-col2 = "#F5F5F5"
-exts = c("Scroller", "ColReorder")
-sample.sizes = c("All", "5000", "2000", "1000")
-options(RCHART_LIB = "nvd3")
+###  Last Modified  :  September 26, 2015.
 
 ###  Function for handling factors.
 set.factor =
@@ -303,7 +296,6 @@ clean.data =
         ##  leading to certain levels being of value "NULL".
         censusData[, !ii.num] = apply(censusData[, !ii.num], 2, factor)
         
-        browser()
         ##  Handle numeric columns.        
         if (length(which.num) > 0) {
             census.df = data.frame(censusData)
@@ -368,16 +360,16 @@ clean.data =
     }           
 
 ###  Clean data.
-census2013 = clean.data("data2013.csv", "var2013.csv")
-census2015 = clean.data("data2015.csv", "var2015.csv")
+## census2013 = clean.data("data2013.csv", "var2013.csv")
+## census2015 = clean.data("data2015.csv", "var2015.csv")
 
 ###  Save as Rda for fast initial loading.
 ## saveRDS(census2013, "census2013.Rda")
 ## saveRDS(census2013, "census2015.Rda")
 
 ###  Read Rda.
-## census2013 = readRDS("census2013.Rda")
-## census2015 = readRDS("census2015.Rda")
+census2013 = readRDS("census2013.Rda")
+census2015 = readRDS("census2015.Rda")
 
 ###  Check
 ## var = "favlearning"
@@ -400,7 +392,58 @@ add.title = function(a) h4(a)
 add.text1 = function(a, b) h5(paste0(a, b))
 add.text2 = function(a, b, c) h5(paste0(a, b, " (", c, ")"))
 
-##  nvd3
+###  Function for displaying page help.
+###
+###  We form a closure to encase the helper functions to ensure
+###  that they are only visible in the local scope. "modal.help"
+###  is returned as the value of the call the "local".
+modal.help =
+    local({
+        modal.head =
+            function(button, title) {
+                paste0(
+                    paste0('<!-- Trigger the modal with a button -->
+                           <button type="button" 
+                                   class="btn btn-xs btn-primary"
+                                   data-toggle="modal" 
+                                   data-target="#help">',
+                           button, '</button>'),
+                    paste0('<!-- Modal -->
+                            <div id="help" class="modal fade" role="dialog">
+                               <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" 
+                                                class="close" 
+                                                data-dismiss="modal">
+                                          &times;
+                                        </button>
+                                        <h4 class="modal-title">',
+                           title,'</h4> </div>'))
+            }
+        
+        modal.tail =
+            function(file, sheet) {
+                paste0('<div class="modal-body">',                       
+                       markdownToHTML(
+                           file = file,
+                           options = "",
+                           stylesheet = sheet), '</div>',
+                       '<div class="modal-footer">
+                        <button type="button" 
+                                class="btn btn-xs btn-primary" 
+                                data-dismiss="modal">
+                           Close
+                        </button>
+                      </div> </div> </div> </div>')
+            }
+
+        function(button, title, file = "help.md", sheet = "www/cosmo.css") 
+            HTML(paste0(modal.head(button, title), modal.tail(file, sheet)))
+    })
+
+##  nvd3 testing.
 ##
 ## a = oneway(census2013[, 1])$table
 ## b = data.frame(a)

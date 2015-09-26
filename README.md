@@ -1,26 +1,39 @@
 <h4> Census Viewer </h4>
-<h5> Last Updated: September 14, 2015. </h5>
+<h6> Last Updated: September 26, 2015. </h6>
 
-This git repository hosts a simple RShiny application that displays a table of counts and a side-by-side bar chart based on census data from secondary schools around New Zealand (currently only the 2013 data; 2015 data coming soon). To test the app, try running the following in R:
+<h5> Introduction </h5>
+This repository hosts a web-based application that displays a table of counts and an interactive bar chart based on real census data collected from secondary schools around New Zealand. The app can be accessed via the following link: http://docker.stat.auckland.ac.nz/spawn/?application=cas. 
+
+This project is supported by Census At School / Tatauranga Ki Te Kura Aotearoa, which aims to be the first port of call for New Zealand educators seeking information and support for their teaching of statistics. For more information, please visit  http://new.censusatschool.org.nz/ to find a large number of original quality teaching resources including workshops, presentations, classroom activities, research papers, interactive data analysis tools, real student data sets and essential links to other statistics websites. 
+
+<h5> Instructions for Manual Testing </h5>
+To run the app *manually* in R, you can either simply clone the repository or download and extract the zip file and start an R session in the directory in which the zip was extracted. You must ensure that the following R packages are installed:
+
+- devtools v1.7.0;
+- DT v0.1;
+- markdown v0.7.4;
+- rCharts v0.4.5;
+- shiny v0.12.1.
+
+Below is some code that might be of some use to testers.
 
 ```{r}
-###  If you don't have the packages "devtools", "rCharts", "shiny",
-###  or "DT", install them.
+###  Code to install the required packages.
 install.packages("devtools")
-devtools::install_github("ramnathv/rCharts")
+install.packages("markdown")
 install.packages("shiny")
 install.packages("DT")
+devtools::install_github("ramnathv/rCharts")
 
-###  Download and extract the .zip file for the app and open up R in
-###  the directory in which you extracted the file. Then try running:
+###  Code to run the app.
 shiny::runApp()
 ```
 
-<h5> Dev Notes </h5>
-- Work on valid points from the Merriman list;
+Note that CAS has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
+
+<h5> Development Notes </h5>
 - Rob Carter working on sidestepping network firewall;
-- If data is of type "discrete", don't group using cut;
-- Convert numbers into words for large numbers (perhaps > 10000);
+- ~~Work on valid points from the Merriman list;~~
 - ~~Fix factor level sorting bug;~~
 - ~~Add reactive help text to (internally) redesigned app;~~
 - ~~Alter reactivity: replace reactive expressions with observers;~~
@@ -32,6 +45,3 @@ shiny::runApp()
 - ~~Write script for data cleaning;~~
 - ~~Randomize column order for data samples;~~
 - ~~Testing on Windows/Mac OS.~~
-
-<h5> What is Census At School? </h5>
-Census At School New Zealand / Tatauranga Ki Te Kura Aotearoa aims to be the first port of call for New Zealand teachers looking for information and support for their teaching of statistics. For more information, please visit  http://new.censusatschool.org.nz/ to find a large number of original quality teaching resources including workshops, presentations, classroom activities, research papers, interactive data analysis tools, real student data sets and essential links to other statistics websites. 

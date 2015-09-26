@@ -6019,7 +6019,8 @@ button.close {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
+  /* z-index: 1040; */
+  z-index: -1;
   background-color: #000000;
 }
 .modal-backdrop.fade {
@@ -6070,7 +6071,7 @@ button.close {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 600px;
+    width: 520px;
     margin: 30px auto;
   }
   .modal-content {
