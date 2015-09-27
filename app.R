@@ -144,6 +144,11 @@ server =
         ##  to a table of raw data (exploiting the fact that the (1, 1)-th cell
         ##  has no name, i.e. the name is empty). Feel free to change this
         ##  if you can come up with a better way...
+        ##
+        ##  Note that we use the '::' operator to prepend the "DT" package to
+        ##  the "renderDataTable" function since there is a conflict between
+        ##  the "DT" and "shiny" packages. 
+
         output$table = renderDataTable({
             validate(need(try(length(input$vars) >= 1), ""))
             DT::datatable(
@@ -355,7 +360,4 @@ ui =
 
 ###  Call app.
 shinyApp(ui, server)
-
-
-
 
