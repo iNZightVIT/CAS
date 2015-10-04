@@ -1,13 +1,12 @@
 ###  Census Viewer
-###
-###  Last Modified  :  September 26, 2015.
-
+###  
 ###  Load the required packages and utility functions.
 library(DT)
+library(RMySQL)
 library(markdown)
 library(rCharts)
 library(shiny)
-source("global.R")
+source("utils.R")
 
 ###  Set global parameters.
 col1 = "#5CB8E6"
@@ -32,6 +31,16 @@ server =
                 else
                     FALSE
             }
+
+        ##  Variable selection
+        output$vars = renderUI({
+            selectizeInput(inputId = "vars",
+                           label = NULL,
+                           multiple = TRUE,
+                           ## selected = "gender",
+                           options = list(maxItems = 2),
+                           choices = vals$all.labs)
+        })        
         
         ##  Set reactive values and set up data switch mechanism.
         ##  Further data to be added, as appropriate.
@@ -116,17 +125,7 @@ server =
             })
         })
         
-        
-        ##  Variable selection
-        output$vars = renderUI({
-            selectizeInput(inputId = "vars",
-                           label = NULL,
-                           multiple = TRUE,
-                           ## selected = "gender",
-                           options = list(maxItems = 2),
-                           choices = vals$all.labs)
-        })        
-        
+                
         ##  Text
         output$text1 = renderText({
             length(vals$samp)
