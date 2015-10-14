@@ -33,6 +33,8 @@ shiny::runApp()
 Note that CAS has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
 <h5> Development Notes </h5>
+- Fix known reactivity issues;
+- Change cleaning structure so that less data is read in;
 - Set appropriate boundary points for numeric variables;
 - ~~Remove authentication details;~~
 - ~~Pull data directly from CAS database;~~
