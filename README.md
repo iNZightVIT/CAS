@@ -7,19 +7,18 @@ This repository hosts a web-based application that displays a table of counts an
 This project is supported by Census At School / Tatauranga Ki Te Kura Aotearoa, which aims to be the first port of call for New Zealand educators seeking information and support for their teaching of statistics. For more information, please visit  http://new.censusatschool.org.nz/ to find a large number of original quality teaching resources including workshops, presentations, classroom activities, research papers, interactive data analysis tools, real student data sets and essential links to other statistics websites. 
 
 <h5> Instructions for Manual Testing </h5>
-To run the app *manually* in R, you can either simply clone the repository or download and extract the zip file and start an R session in the directory in which the zip was extracted. You must ensure that the following R packages are installed:
-
+To run the app *manually* in R, you can either clone the repository or download and extract the .zip file and start an R session in the directory in which the .zip was extracted. You must ensure that the following R packages are installed:
 - devtools v1.7.0;
 - DT v0.1;
 - markdown v0.7.4;
 - rCharts v0.4.5;
-- RMySQL v. 0.10.4;
+- RMySQL v0.10.4;
 - shiny v0.12.1.
 
-Below is some code that might be of some use to testers.
+Note that the app has only been tested with packages with versions as above. It may or may not work correctly with other versions. Below is some code that might be of some use to testers.
 
 ```{r}
-###  Code to install the required packages.
+###  Code to install the required packages.s
 install.packages("devtools")
 install.packages("markdown")
 install.packages("shiny")
@@ -34,7 +33,7 @@ Note that CAS has only been tested on R versions >= 3.2.0 ("Full of Ingredients"
 
 <h5> Development Notes </h5>
 - Fix known reactivity issues;
-- Change cleaning structure so that less data is read in;
+- Change cleaning structure so that less data is read in from db;
 - Set appropriate boundary points for numeric variables;
 - ~~Remove authentication details;~~
 - ~~Pull data directly from CAS database;~~
