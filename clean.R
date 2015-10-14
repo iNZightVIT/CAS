@@ -10,11 +10,13 @@ clean.data =
         ##  Creates a database connection object then extract desired table.
         ##  Note that the function that retrieves the table from the data-
         ##  base is wrapped with "suppressWarnings" to hide the resulting
-        ##  harmless (but annoying) warning message.
+        ##  harmless (but annoying) warning message. Authentication details
+        ##  are read in from "config.R", which is created automatically by
+        ##  the docker container using "config.sample".
         get.table =
-            function(table, user = "cas-shiny", password = "kjdzfvjk2858sf",         
-                     host = "localhost", dbname = "stat_censusatschool",
+            function(table, dbname = "stat_censusatschool",
                      query = "SELECT * FROM") {
+                source("config.R", local = TRUE)
                 db.conn =
                     dbConnect(MySQL(), user = user,
                               password = password,
