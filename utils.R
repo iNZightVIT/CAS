@@ -1,6 +1,8 @@
-###  Global Functions / Values 
+###  Utility Functions 
 ###
-###  Last Modified  :  September 26, 2015.
+###  Last Modified  :  October 3, 2015.
+
+source("clean.R")
 
 ###  Function for handling factors.
 set.factor =
@@ -11,7 +13,8 @@ set.factor =
                 if (type == "categorical") 
                     lvls = unique(data)                    
                 as.factor(data, levels = lvls[, ii])
-            } else {
+            }
+            else {
                 for (i in 1:length(var)) {
                     ii = which(var[i] == colnames(lvls))
                     if (length(ii > 0)) {
@@ -173,216 +176,6 @@ footer.html =
       </div>
      </div>' 
 
-###  Cleaning Functions
-clean.data =
-    function(data, var) {
-
-        ##  Input check
-        stopifnot(is.character(data), is.character(var))
-        
-        ##  Function to extract columns.
-        get.var =
-            function(col, lab.ind = "label", data = varInfo) {
-                labs = data[, lab.ind]
-                ii = data[, col]
-                names(ii) = labs
-                ii
-            }
-        
-        ##  Function to truncate numeric variables.
-        ##
-        ##  New (quantile-based).
-        truncate =
-            function(x) {
-                quants = quantile(x, probs = seq(0, 1, by = .125))
-                breaks = unique(quants)
-                ## if (length(breaks) < length(quants) / 2) {
-                ##     quants = quantile(x, probs = seq(0, 1, by = .01))
-                    
-                cuts = cut(x, breaks = breaks, dig.lab = 10, include.lowest = TRUE)
-                ## table(cuts) / sum(table(cuts))
-                lvls = levels(cuts)
-                ## pattern = "^\\[|^\\(|\\]$|\\)$"
-                pattern = "\\]|\\(|\\["
-                clean = gsub(",", "-", gsub(pattern, "", lvls))
-
-                ##  Handle long numbers
-                if (any(nchar(clean) > 11)) {
-                    seps = unlist(lapply(clean, function(x) unlist(strsplit(x, "-"))))      
-                    new =
-                        sapply(seps, function(x) {
-                                   n = nchar(x)
-                                   if (n <= 6)
-                                       x = paste0(substring(x, 1, 3), "K")
-                                   else if (n <= 8)
-                                       x =
-                                           paste0(substring(x, 1, 1), ".",
-                                                  substring(x, 2, 3), "M")
-                                   else
-                                       stop("Check x...it's too big.")
-                               })
-                    
-                    lefts = c(TRUE, FALSE)
-                    clean = paste(new[lefts], new[!lefts], sep = "-")
-                }
-                levels(cuts) = clean
-
-                ##  Return output.
-                list(cuts = cuts,
-                     lvls = clean)
-            }                                 
-
-        ##  Old (equally spaced).
-        ## truncate =
-        ##     function(x) {
-        ##         x.breaks =
-        ##             unique(as.integer(seq(0, max(x), length = 6)))
-        ##         cuts =
-        ##             cut(x, breaks = x.breaks, dig.lab = 10,
-        ##                 include.lowest = TRUE)
-        ##         lvls = levels(cuts)
-        ##         pattern = "^\\[|^\\(|\\]$|\\)$"
-        ##         clean = gsub(",", "-", gsub(pattern, "", lvls))
-        ##         levels(cuts) = clean
-        ##         list(cuts = cuts,
-        ##              lvls = clean)
-        ##     }
-
-        ##  Read variable info file and extract relevant columns.
-        varInfo = as.matrix(read.csv(var))
-        vars = get.var("variable")
-        ques = get.var("question", lab.ind = "variable")
-        unit = get.var("unit", lab.ind = "variable")
-        type = get.var("type", lab.ind = "variable")
-
-        ##  Read in relevant data.
-        censusData = read.csv(data)[, vars]
-        k = ncol(censusData)
-        
-        ##  Column check.
-        if (!all(vars %in% colnames(censusData)))
-            stop("Column names don't match!")
-
-        ##  Label generation.
-        cats = unique(varInfo[, "category"])
-        cat.func = function(x) which(varInfo[, "category"] == x)
-        cat.rows = sapply(cats, cat.func)
-        all.labs = lapply(cat.rows, function(x) vars[x])
-
-        ##  Help and unit strings.
-        help.texts = lapply(cat.rows, function(x) ques[x])
-        unit.texts = lapply(cat.rows, function(x) unit[x])
-
-        ##  Data cleaning
-        clean = function(x) which(is.na(x) | is.null(x) |
-                                   x == "" | x == "NULL")
-        ii = apply(censusData, 2, clean)
-        
-        if (length(ii) > 0) {
-            jj = unique(unlist(ii))
-            censusData = censusData[-jj, ]
-            
-            if (ncol(censusData) < k) {
-                sub.names = colnames(censusData)
-                type = type[sub.names]
-            }
-        }
-        
-        ##  Find numeric columns.
-        ii.num = type == "float" | type == "integer"
-        which.num = which(ii.num)
-
-        ##  Coerce non-numeric columns into factors due to loss of rows
-        ##  leading to certain levels being of value "NULL".
-        censusData[, !ii.num] = apply(censusData[, !ii.num], 2, factor)
-        
-        ##  Handle numeric columns.        
-        if (length(which.num) > 0) {
-            census.df = data.frame(censusData)
-            census.num = census.df[, which.num]
-            census.num = apply(census.num, 2, as.numeric)
-            
-            ##  Wipe negative values.
-            fn.zero = function(x) any(x < 0)
-            ii.zero = apply(census.num, 2, fn.zero)
-            if (any(ii.zero)) {
-                which.zero = which(ii.zero)
-                census.num[, which.zero] =
-                    apply(census.num[, which.zero], 2,
-                          function(x) {
-                              ii = which(x < 0)
-                              x[ii] = 0
-                              x[!ii] = x
-                          })
-            }            
-
-            ##  Remove "outliers".
-            ii.big = apply(census.num, 2, function(x) which(x > 4 * mean(x)))
-            if (length(ii.big) > 0) {
-                big = unique(unlist(ii.big))
-                census.num = census.num[-big, ]
-                census.df = census.df[-big, ]
-            }
-            
-            ##  Separate integer and non-integer columns.
-            check.int = function(x) all(round(x) == x)
-            int.cols = apply(census.num, 2, check.int)
-            non.cols = !int.cols
-            
-            ##  Round the non-integer columns to 1dp.            
-            census.num[, non.cols] = round(census.num[, non.cols], 1)                      
-            
-            ##  Coerce into integer then truncate.
-            ## int.trunc = function(x) truncate(as.integer(x))$cuts
-            ## int.level = function(x) truncate(as.integer(x))$lvls
-            int.trunc = function(x) truncate(x)$cuts
-            int.level = function(x) truncate(x)$lvls
-
-            census.lvl = apply(census.num, 2, int.level)
-            census.num = apply(census.num, 2, int.trunc)
-            
-            ##  Replace.
-            census.df[, which.num] = census.num
-        }
-        ##  Store type.
-        if (ncol(censusData) < k) {
-            sub.names = colnames(censusData)
-            type = type[sub.names]
-        }
-        
-        ##  Return.
-        list(data = census.df,
-             labs = all.labs,
-             help = help.texts,
-             unit = unit.texts,
-             lvls = census.lvl,
-             type = type)
-    }           
-
-###  Clean data.
-## census2013 = clean.data("data2013.csv", "var2013.csv")
-## census2015 = clean.data("data2015.csv", "var2015.csv")
-
-###  Save as Rda for fast initial loading.
-## saveRDS(census2013, "census2013.Rda")
-## saveRDS(census2013, "census2015.Rda")
-
-###  Read Rda.
-census2013 = readRDS("census2013.Rda")
-census2015 = readRDS("census2015.Rda")
-
-###  Check
-## var = "favlearning"
-## data = census2013$data[, var]
-## lvls = census2013$lvls[var]
-## type = census2013$type[var]
-## oneway(data, var, lvls, type)
-
-## vars = c("favlearning", "languages")
-## data = census2013$data[, vars]
-## lvls = census2013$lvls[vars]
-## type = census2013$type[vars]
-## twoway(data, vars, lvls, type)
 
 ###  Function for pasting.
 name.func = function(x, y, sep = ": ") paste0(x, sep, y)
