@@ -1,0 +1,9 @@
+###  History Files.
+.Rhistory
+.Rapp.history
+
+###  Authenticaion File.
+config.R
+
+###  Dev Notes.
+dev.md

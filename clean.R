@@ -14,8 +14,7 @@ clean.data =
         ##  are read in from "config.R", which is created automatically by
         ##  the docker container using "config.sample".
         get.table =
-            function(table, dbname = "stat_censusatschool",
-                     query = "SELECT * FROM") {
+            function(table, query = "SELECT * FROM") {
                 source("config.R", local = TRUE)
                 db.conn =
                     dbConnect(MySQL(), user = user,
