@@ -1,7 +1,8 @@
 ###  Utility Functions 
 ###
-###  Last Modified  :  October 3, 2015.
+###  Last Modified  :  October 14, 2015.
 
+###  Load the cleaning script into memory.
 source("clean.R")
 
 ###  Function for handling factors.
@@ -114,18 +115,6 @@ twoway =
              table = data.table, sum.table = sum.table)
     }
 
-
-###  Load Module R files
-load.modules = function(path) {
-    filepaths =
-        list.files(pattern = "[.]R$",
-                   path = path,
-                   full.names = TRUE,
-                   recursive = TRUE)
-    
-    invisible(lapply(filepaths, source))
-}
-
 ###  Selectize Input
 selectize.input =
     function(inputId, label = NULL, choices,
@@ -156,31 +145,8 @@ tab.args =
         icon = icon(name = iname, class = iclass)
     }
 
-
-###  Footer 
-footer.html =
-    '<div id = "wrapper">
-      <div id = "footer">
-       <span style = "float:left;">
-          <font size="2">Copyright 2015 | All Rights Reserved</font>
-       </span>
-       <div class="icons" style="float:right; margin: 0 5px;">
-         <i class="fa fa-facebook-square fa-2x"></i>
-       </div>
-       <div class="icons" style="float:right; margin: 0 5px;">
-         <i class="fa fa-twitter fa-2x"></i>
-       </div>
-       <div class="icons" style="float:right; margin: 0 5px;">
-         <i class="fa fa-github fa-2x"></i>
-       </div>
-      </div>
-     </div>' 
-
-
-###  Function for pasting.
+###  Functions for string manipulation.
 name.func = function(x, y, sep = ": ") paste0(x, sep, y)
-
-###  Functions for help texts.
 add.title = function(a) h4(a)
 add.text1 = function(a, b) h5(paste0(a, b))
 add.text2 = function(a, b, c) h5(paste0(a, b, " (", c, ")"))
@@ -235,20 +201,4 @@ modal.help =
         function(button, title, file = "help.md", sheet = "www/cosmo.css") 
             HTML(paste0(modal.head(button, title), modal.tail(file, sheet)))
     })
-
-##  nvd3 testing.
-##
-## a = oneway(census2013[, 1])$table
-## b = data.frame(a)
-## labs = colnames(b)
-## form = formula(paste(labs[2], '~', labs[1]))
-## nPlot(form, data = b, type = "discreteBarChart")
-## nPlot(Freq ~ data, data = b, type = "discreteBarChart")
-## p1 = nPlot(x = "data", y = "Freq", data = b, type = "discreteBarChart")
-## p1$chart(color = c('#5CB8E6', '#E87F5B'))
-## p1
-## c = twoway(census2013[, 1:2])$table
-## d = data.frame(c)
-## p2 = nPlot(Freq ~ allergiesdairy, group = "allergieseggs",
-##       data = d, type = "multiBarChart")
 

@@ -1,19 +1,18 @@
 ###  Census Viewer
-###  
-###  Load the required packages and utility functions.
-library(DT)
-library(RMySQL)
-library(markdown)
-library(rCharts)
-library(shiny)
-source("utils.R")
+###
+###  Last Updated  :  October 14, 2015.
 
 ###  Set global parameters.
+pkgs = c("DT", "markdown", "rCharts", "RMySQL", "shiny")
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
 exts = c("Scroller", "ColReorder")
 sample.sizes = c("All", "5000", "2000", "1000")
 options(RCHART_LIB = "nvd3", shiny.deprecation.messages = FALSE)
+
+###  Load the required packages and scripts.
+sapply(pkgs, require, character.only = TRUE)
+source("utils.R")
 
 ###  Set up the server function. Note use of the explicit definition of
 ###  the "session" argument for the download handler.

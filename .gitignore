@@ -2,8 +2,11 @@
 .Rhistory
 .Rapp.history
 
-###  Authenticaion File.
+###  Authentication File.
 config.R
 
 ###  Dev Notes.
 dev.md
+
+###  Miscellany.
+misc.R
