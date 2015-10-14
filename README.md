@@ -14,8 +14,7 @@ To run the app *manually* in R, you can either clone the repository or download 
 - rCharts v0.4.5;
 - RMySQL v0.10.4;
 - shiny v0.12.1.
-
-Note that the app has only been tested with packages with versions as above. It may or may not work correctly with other versions. Below is some code that might be of some use to testers.
+Note that the app may not work correctly with different package versions. Below is some code that might be of some use to testers.
 
 ```{r}
 ###  Code to install the required packages.s
@@ -25,11 +24,11 @@ install.packages("shiny")
 install.packages("DT")
 devtools::install_github("ramnathv/rCharts")
 
-###  Code to run the app.
-shiny::runApp()
+###  Code to run the app. Change the path as appropriate.
+shiny::runApp("path/to/app/directory")
 ```
 
-Note that CAS has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
+Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
 <h5> Development Notes </h5>
 - Fix known reactivity issues;
