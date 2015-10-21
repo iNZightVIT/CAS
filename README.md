@@ -31,7 +31,8 @@ shiny::runApp("path/to/app/directory")
 Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
 <h5> Development Notes </h5>
-- Fix known reactivity issues, e.g. when changing "year".
+- Add screenshots to help.md, incl. adding/removing bars.
+- Fix known reactivity issues, e.g. when changing "year";
 - Change cleaning structure so that less data is read in from db;
 - Set appropriate boundary points for numeric variables;
 - ~~Remove authentication details;~~
