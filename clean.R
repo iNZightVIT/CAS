@@ -291,10 +291,10 @@ clean.data =
 
 ###  Call.
 data = "response2015"
-vars = "var2015"
+vars = "var2015.csv"
 census2015 = clean.data(data, vars)
 
 data = "response2013"
-vars = "var2013"
+vars = "var2013.csv"
 census2013 = clean.data(data, vars)
 
