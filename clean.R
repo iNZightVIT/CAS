@@ -238,7 +238,7 @@ clean.data =
         function(data, vars) {
             ##  Extract data and variable tables.
             dat.tab = get.table(table = data)
-            var.tab = read.csv(vars)
+            var.tab = as.matrix(read.csv(vars))
 
             ##  Variable handling.
             var.col = c("variable", "question", "unit", "type", "category")
