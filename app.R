@@ -14,10 +14,11 @@ options(RCHART_LIB = "nvd3", shiny.deprecation.messages = FALSE)
 sapply(pkgs, require, character.only = TRUE)
 source("utils.R")
 
-###  Set up the server function. Note use of the explicit definition of
-###  the "session" argument for the download handler.
+###  Set up the server function. Note the explicit specification
+###  of the "session" arguments for the download handler.
 server =
-    function(input, output, session) {        
+    function(input, output, session) {
+        
         ##  Dynamic container in which to store reactive values.
         vals = reactiveValues()
 
@@ -110,10 +111,11 @@ server =
                     vals$lvls = vals$lvls[input$vars]
                     vals$type = vals$type[input$type]
                     
-                    ##  Determine frequency form. Note the use of the explicit
-                    ##  integer suffix so we can match the length of input$vars
-                    ##  exactly. The 4 byte save in memory is a bonus (at the
-                    ##  expense of readability of course).
+                    ##  Determine frequency form. Note the use of the
+                    ##  explicit integer suffix so we can match the
+                    ##  length of input$vars exactly. The 4 byte save
+                    ##  in memory is a bonus (at the expense of
+                    ##  readability of course).
                     if (identical(length(input$vars), 1L)) 
                         vals$freq = oneway(vals$cols, input$vars,
                             vals$lvls, vals$type, vals$labs)
@@ -132,20 +134,21 @@ server =
         
         ##  Table
         ##
-        ##  While the code looks somewhat complex, it is simply a list of
-        ##  arguments to a single function ("renderDataTable") to customize
-        ##  the way it displays data. The code wrapped by the "JS" function
-        ##  and in quotes is written in Javascript.
+        ##  While the code looks somewhat complex, it is simply a list
+        ##  of arguments to a single function ("renderDataTable") to
+        ##  customize the way it displays data. The code wrapped by
+        ##  the "JS" function and in quotes is written in Javascript.
         ##
-        ##  The empty string in the first argument of "formatStyle" is a dirty
-        ##  hack to force the table to look like a frequency table, as opposed
-        ##  to a table of raw data (exploiting the fact that the (1, 1)-th cell
-        ##  has no name, i.e. the name is empty). Feel free to change this
-        ##  if you can come up with a better way...
+        ##  The empty string in the first argument of "formatStyle" is
+        ##  a dirty hack to force the table to look like a frequency
+        ##  table, as opposed to a table of raw data (exploiting the
+        ##  fact that the (1, 1)-th cell has no name, i.e. the name is
+        ##  empty). Feel free to change this if you can come up with a
+        ##  better way...
         ##
-        ##  Note that we use the '::' operator to prepend the "DT" package to
-        ##  the "renderDataTable" function since there is a conflict between
-        ##  the "DT" and "shiny" packages. 
+        ##  Note that we use the '::' operator to prepend the "DT"
+        ##  package to the "renderDataTable" function since there is a
+        ##  conflict between the "DT" and "shiny" packages.
 
         output$table = renderDataTable({
             validate(need(try(length(input$vars) >= 1), ""))
@@ -192,32 +195,46 @@ server =
             
             ##  Loop through 'nvar' to assign appropriate names.
             nvar = length(input$vars)
-            for (i in seq_len(nvar)) {
-                if (ncol(freq) < 7 & nchar(labs[i] < 12))
-                    freq[, i] = name.func(labs[i], freq[, i])
-                else
-                    freq[, i] = name.func(substring(labs[i], 1, 11),
-                            freq[, i])
-            }
+
+            ##  The x-axis label doesn't seem to center properly for
+            ##  nlevels(freq[, 1]) <= 2, so we make it blank since the
+            ##  label should be fairly self-explanatory for a
+            ##  unary/binary x-variable anyway.
+            xlab = ifelse(nlevels(freq[, 1]) <= 2, "", labs[1])
+
+            ##  This was the old approach, but it took up far
+            ##  too much real estate.
+            ## for (i in seq_len(nvar)) {
+            ##     if (ncol(freq) < 7 & nchar(labs[i] < 12))
+            ##         freq[, i] = name.func(labs[i], freq[, i])
+            ##     else
+            ##         freq[, i] = name.func(substring(labs[i], 1, 11),
+            ##                 freq[, i])
+            ## }
+
+            ##  Capitalize.
+            for (i in seq_len(nvar))
+                substring(levels(freq[, i]), 1, 1) =
+                    toupper(substring(levels(freq[, i]), 1, 1))
             
             ##  Set formula.
             form = formula(name.func(name[nvar + 1], name[1], " ~ "))
             
             ##  Draw plots.
             ##
-            ##  A dirty hack is used here to force the plot to fit in the 
-            ##  plot window (since it occupies the whole screen by default).
-            ##  It is set to take on the width of an "empty plot" of height
-            ##  zero (but suitable width).            
+            ##  A dirty hack is used here to force the plot to fit in
+            ##  the plot window (since it occupies the whole screen by
+            ##  default).  It is set to take on the width of an "empty
+            ##  plot" of height zero (but suitable width).
             plot.width = session$clientData[["output_plot1_width"]]
 
-            ##  Please forgive me for the L's.
             if (identical(nvar, 1L)) {
                 p1 <<- nPlot(form,
                              data = freq,
                              type = "discreteBarChart",
                              width = plot.width)
-                p1$yAxis(axisLabel = "Frequency")
+                p1$xAxis(axisLabel = xlab)                
+                ## p1$yAxis(axisLabel = "Frequency")
                 p1$addParams(dom = "barplot")
                 p1
             } else {
@@ -226,7 +243,8 @@ server =
                              group = name[2],
                              type = "multiBarChart",
                              width = plot.width)
-                p2$yAxis(axisLabel = "Frequency")
+                p2$xAxis(axisLabel = xlab)
+                ## p2$yAxis(axisLabel = "Frequency")
                 p2$addParams(dom = "barplot")
                 p2
             }
@@ -234,15 +252,21 @@ server =
 
         ##  Help Text
         ##
-        ##  This one's a bit of a beast...You can re-do the whole thing if you
-        ##  feel strongly about it. At the end of the day, all it does is
-        ##  display appropriate text above either the plot or table.
+        ##  This one's a bit of a beast...You can re-do the whole
+        ##  thing if you feel strongly about it. At the end of the
+        ##  day, all it does is display appropriate text above either
+        ##  the plot or table.
         help.text =
             function(x, tab = TRUE) {
                 ##  Set up appropriate descriptions.
-                text = ifelse(tab, "table.", "plot.")
-                desc1 = ifelse(tab, "One-way Table of Counts", "One-variable Bar Plot")
-                desc2 = ifelse(tab, "Two-way Table of Counts", "Two-variable Bar Plot")
+                text =
+                    ifelse(tab, "table.", "plot.")
+                desc1 =
+                    ifelse(tab, "One-way Table of Counts",
+                           "One-variable Bar Plot")
+                desc2 =
+                    ifelse(tab, "Two-way Table of Counts",
+                           "Two-variable Bar Plot")
                 
                 ##  Check 1.
                 validate(
@@ -265,7 +289,8 @@ server =
                     ##  Add text
                     if (identical(length(input$vars), 1L)) {
                         title = add.title(desc1)
-                        quest = add.text1("Question: ", help[[grps]][vars])
+                        quest = add.text1("Question: ",
+                                          help[[grps]][vars])
                         vals$group = add.text1("Category: ", grps)
                         vals$units = add.text2("Variable: ", labs,
                             unit[[grps]][vars])
@@ -283,9 +308,10 @@ server =
                         vals$group2 = add.text1("Category 2: ", grps[2])
                         vals$units2 = add.text2("Variable 2: ", labs[2],
                             unit[[grps[2]]][vars[2]])
-                        HTML(paste(title, "<hr>",
-                                   quest1, vals$group1, vals$units1, "<br>",
-                                   quest2, vals$group2, vals$units2, "<br>"))
+                        HTML(paste(
+                            title, "<hr>",
+                            quest1, vals$group1, vals$units1, "<br>",
+                            quest2, vals$group2, vals$units2, "<br>"))
                     }
                 }
             }
@@ -303,7 +329,7 @@ server =
         })                
 
         ##  Edit column name for the single-variable xlsx table.
-        observe({
+        reactive({
             input$vars
             if (identical(length(input$vars), 1L)) {
                 vals$xlsx = cbind(vals$xlsx)
@@ -313,8 +339,12 @@ server =
         
         ##  Download        
         output$downloadFile = downloadHandler(            
-            filename = function(x) paste0(input$data, ".csv"),
-            content = function(file) write.csv(vals$xlsx, file, row.names = FALSE))
+            filename =
+                function(x)
+                    paste0(input$data, ".csv"),
+            content =
+                function(file)
+                    write.csv(vals$xlsx, file, row.names = FALSE))
     }
 
 ##  Set up the user interface. This part is trivial.

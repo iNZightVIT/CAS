@@ -198,7 +198,9 @@ modal.help =
                       </div> </div> </div> </div>')
             }
 
-        function(button, title, file = "help.md", sheet = "www/cosmo.css") 
-            HTML(paste0(modal.head(button, title), modal.tail(file, sheet)))
+        function(button, title, file = "help.md",
+                 sheet = "www/cosmo.css") 
+            HTML(paste0(modal.head(button, title),
+                        modal.tail(file, sheet)))
     })
 
