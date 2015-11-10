@@ -31,7 +31,9 @@ shiny::runApp("path/to/app/directory")
 Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
 <h5> Development Notes </h5>
-- Add screenshots to help.md, incl. adding/removing bars.
+- Make it possible to "swap" x and y;
+- Hack table so users can edit it directly;
+- Add screenshots to help.md, incl. adding/removing bars;
 - Change cleaning structure so that less data is read in from db;
 - Set appropriate boundary points for numeric variables;
 - ~~Clean up nvd3 to avoid label overlapping;~~
