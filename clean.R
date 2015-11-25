@@ -236,6 +236,7 @@ clean.data =
         
         ##  Outer function 
         function(data, vars) {
+
             ##  Extract data and variable tables.
             dat.tab = get.table(table = data)
             var.tab = as.matrix(read.csv(paste0("data/", vars)))
@@ -290,11 +291,8 @@ clean.data =
     })
 
 ###  Call.
-data = "response2015"
-vars = "var2015.csv"
-census2015 = clean.data(data, vars)
-
-data = "response2013"
-vars = "var2013.csv"
-census2013 = clean.data(data, vars)
+census2015 = clean.data("response2015", "var2015.csv")
+census2013 = clean.data("response2013", "var2013.csv")
+census2011 = clean.data("response2011tidy", "var2011.csv")
+census2009 = clean.data("response2009tidy3", "var2009.csv")
 

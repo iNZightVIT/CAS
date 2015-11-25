@@ -1,8 +1,9 @@
 ###  Census Viewer
 ###
-###  Last Updated  :  October 14, 2015.
+###  Last Updated  :  November 25, 2015.
 
 ###  Set global parameters.
+year = seq(2015, 2009, by = 2)
 pkgs = c("DT", "markdown", "rCharts", "RMySQL", "shiny")
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
@@ -50,7 +51,9 @@ server =
                 inputData =
                     switch(input$data,
                            "2015" = census2015,
-                           "2013" = census2013)
+                           "2013" = census2013,
+                           "2011" = census2011,
+                           "2009" = census2009)
                 vals$all.labs = inputData$labs
                 vals$data = inputData$data
                 vals$help = inputData$help
@@ -358,9 +361,7 @@ ui =
                wellPanel(
                    h5(helpText("Data Set:")),                   
                    selectize.input(inputId = "data",
-                                   choices =
-                                       c("2015",
-                                         "2013")),
+                                   choices = year),
                    h5(helpText("Sample Size:")),                   
                    selectize.input(inputId = "sample",
                                    choices = sample.sizes),

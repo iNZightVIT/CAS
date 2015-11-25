@@ -1,5 +1,5 @@
 <h4> Census Viewer </h4>
-<h6> Last Updated: November 23, 2015. </h6>
+<h6> Last Updated: November 25, 2015. </h6>
 
 <h5> Introduction </h5>
 This repository hosts a web-based application that displays a table of counts and an interactive bar chart based on real census data collected from secondary schools around New Zealand. The app can be accessed via the following link: http://docker.stat.auckland.ac.nz/spawn/?application=cas. 
@@ -32,12 +32,12 @@ Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredie
 
 <h5> Development Notes </h5>
 - Explore dynatables;
-- Add additional years - 2011 in progress;
 - Make it possible to "swap" x and y;
 - Hack table so users can edit it directly;
 - Add screenshots to help.md, incl. adding/removing bars;
 - Change cleaning structure so that less data is read in from db;
 - Set appropriate boundary points for numeric variables;
+- ~~Added 2009 and 2011 tables (with recycled variables);~~
 - ~~Clean up nvd3 to avoid label overlapping;~~
 - ~~Fix known reactivity issues, e.g. when changing "year";~~
 - ~~Remove authentication details;~~
