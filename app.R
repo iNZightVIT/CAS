@@ -3,7 +3,7 @@
 ###  Last Updated  :  November 25, 2015.
 
 ###  Set global parameters.
-year = seq(2015, 2009, by = 2)
+year = seq(2015, 2009, by = -2)
 pkgs = c("DT", "markdown", "rCharts", "RMySQL", "shiny")
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
