@@ -162,7 +162,6 @@ server =
 
         output$table = renderDataTable({
             validate(need(try(length(input$vars) >= 1), ""))
-            print(vals$freq$data)
             DT::datatable(
                 vals$freq$data,
                 class = "cell-border compact stripe",
