@@ -8,6 +8,9 @@ config.R
 ###  Dev Notes.
 dev.md
 
+###  Cleaning.
+clean.R
+
 ###  Miscellany.
 misc.R
 sql.R

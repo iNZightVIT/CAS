@@ -7,8 +7,14 @@ year = seq(2015, 2009, by = -2)
 pkgs = c("DT", "markdown", "rCharts", "RMySQL", "shiny")
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
-exts = c("Scroller", "ColReorder")
+## exts = c("Scroller", "ColReorder")
 sample.sizes = c("All", "5000", "2000", "1000")
+options = 
+    list(maxItems = 2,
+         plugins = 
+             list("remove_button",
+                  "restore_on_backspace"))
+
 options(RCHART_LIB = "nvd3", shiny.deprecation.messages = FALSE)
 
 ###  Load the required packages and scripts.
@@ -39,9 +45,10 @@ server =
                            label = NULL,
                            multiple = TRUE,
                            ## selected = "gender",
-                           options = list(maxItems = 2),
+                           options = options,
                            choices = vals$all.labs)
-        })        
+
+        })
         
         ##  Set reactive values and set up data switch mechanism.
         ##  Further data to be added, as appropriate.
@@ -159,7 +166,7 @@ server =
                 vals$freq$data,
                 class = "cell-border compact stripe",
                 style = "bootstrap",
-                extensions = exts,
+                ## extensions = exts,
                 rownames = TRUE,
                 selection = "none",
                 options = list(
@@ -171,11 +178,13 @@ server =
                          'font-weight': 'bold'});",
                         "}"),                    
                     pageLength = 3,
+                    ordering = FALSE,
+                    bautowidth = FALSE,
                     autowidth = FALSE,
-                    deferRender = TRUE,
+                    ## deferRender = TRUE,
                     scrollCollapse = TRUE,
-                    scrollY = 400,
-                    colReorder = list(realtime = TRUE),
+                    ## scrollY = 400,
+                    ## colReorder = list(realtime = TRUE),
                     dom = 'T<"clear">rRtS')
                 ) %>%                
                 formatStyle(' ',

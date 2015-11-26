@@ -1,9 +1,16 @@
 ###  Utility Functions 
 ###
-###  Last Modified  :  October 14, 2015.
+###  Last Modified  :  November 27, 2015.
 
-###  Load the cleaning script into memory.
-source("clean.R")
+###  Load tables into memory.
+x = seq(2015, 2009, by = -2)
+files = paste0("data/", x, ".Rda")
+
+###  We should probably store these in a single list.
+census2015 = readRDS(files[1])
+census2013 = readRDS(files[2])
+census2011 = readRDS(files[3])
+census2009 = readRDS(files[4])
 
 ###  Function for handling factors.
 set.factor =
@@ -117,7 +124,7 @@ twoway =
 
 ###  Selectize Input
 selectize.input =
-    function(inputId, label = NULL, choices,
+    function(inputId, choices, label = NULL, 
              options = NULL, multiple = FALSE) {
              ## , width = "175px") {
         

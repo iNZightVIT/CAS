@@ -6,8 +6,6 @@ The application is divided into two vertical **panels**:
 <h5> Input Panel </h5>
 - You may specify the data set, sample size, and variables desired.
 - You can download a sample of the data set by clicking "Download Data".
-- Variables can be removed using the *delete* or *backspace* keys on your
-keyboard.
 
 <h5> Output Panel </h5>
 - A frequency table or bar chart based on the inputs you specified in the input panel are displayed here.

@@ -7,12 +7,13 @@
 
 clean.data =
     local({
-        ##  Creates a database connection object then extract desired table.
-        ##  Note that the function that retrieves the table from the data-
-        ##  base is wrapped with "suppressWarnings" to hide the resulting
-        ##  harmless (but annoying) warning message. Authentication details
-        ##  are read in from "config.R", which is created automatically by
-        ##  the docker container using "config.sample".
+        ##  Creates a database connection object then extract desired
+        ##  table.  Note that the function that retrieves the table
+        ##  from the data- base is wrapped with "suppressWarnings" to
+        ##  hide the resulting harmless (but annoying) warning
+        ##  message. Authentication details are read in from
+        ##  "config.R", which is created automatically by the docker
+        ##  container using "config.sample".
         get.table =
             function(table, query = "SELECT * FROM") {
                 source("config.R", local = TRUE)
@@ -50,9 +51,12 @@ clean.data =
                 ind.cats = function(x) which(all.cats == x)
                 ext.cats = function(x, n, y = info) y[, n][x]
                 row.cats = sapply(grp.cats, ind.cats)
-                help.texts = lapply(row.cats, function(x) ext.cats(x, 1))
-                unit.texts = lapply(row.cats, function(x) ext.cats(x, 2))
-                all.labs = lapply(row.cats, function(x) vars[x])
+                help.texts =
+                    lapply(row.cats, function(x) ext.cats(x, 1))
+                unit.texts =
+                    lapply(row.cats, function(x) ext.cats(x, 2))
+                all.labs =
+                    lapply(row.cats, function(x) vars[x])
                 list(all.labs = all.labs,
                      help.texts = help.texts,
                      unit.texts = unit.texts)                    
@@ -64,7 +68,7 @@ clean.data =
                 check.def =
                     function(x) {
                         ii = which(is.na(x) | is.null(x))
-                        jj = which(identical(x, "") | identical(x, "NULL"))
+                        jj = which(x == "" | x == "NULL")
                         unique(sort(c(ii, jj)))
                     }
 
@@ -94,11 +98,13 @@ clean.data =
                                 x[ii] = 0
                                 x[!ii] = x
                             }                        
-                        ii.negs = apply(census.num, 2, function(x) any(x < 0))
+                        ii.negs =
+                            apply(census.num, 2, function(x) any(x < 0))
                         if (any(ii.negs)) {
                             which.negs = which(ii.negs)
                             census.num[, which.negs]  =
-                                apply(census.num[, which.negs], 2, force.zero)
+                                apply(census.num[, which.negs], 2,
+                                      force.zero)
                         }
                         census.num
                     }
@@ -115,8 +121,9 @@ clean.data =
                     }             
                
                 
-                ##  Handles doubles. The somewhat unusual indentation is
-                ##  to enforce a 80 character limit on each line of code.
+                ##  Handles doubles. The somewhat unusual indentation
+                ##  is to enforce a 80 character limit on each line of
+                ##  code.
                 handle.dble =
                     function(census.num) {
                         ##  String handling for long numbers.
@@ -130,7 +137,8 @@ clean.data =
                                 else {                          
                                     n = nchar(x)
                                     if (n <= 6)
-                                        x = paste0(substring(x, 1, 3), "K")
+                                        x = paste0(substring(x, 1, 3),
+                                                   "K")
                                     else if (n <= 9) {
                                         m = n - 7
                                         pre = substring(x, 1, m + 1)
@@ -146,14 +154,16 @@ clean.data =
                             function(x, sep = "-",
                                      probs = seq(0, 1, by = .1)) {
                                 
-                                breaks = unique(quantile(x, probs = probs))
+                                breaks =
+                                    unique(quantile(x, probs = probs))
                                 cuts = cut(x, breaks = breaks, 
                                     dig.lab = 10, include.lowest = TRUE)
                                 lvls = levels(cuts)
                                 pattern = "\\]|\\(|\\["
                                 lvls =
                                     gsub(",", sep,
-                                         gsub(pattern, "", lvls))                
+                                         gsub(pattern, "",
+                                              lvls))                
                                 if (any(nchar(lvls) > 11)) {
                                     splits =
                                         lapply(lvls,
@@ -175,7 +185,8 @@ clean.data =
 
                         ##  "handle.dble" starts here.
                         int.cols =
-                            apply(census.num, 2, function(x) all(round(x) == x))
+                            apply(census.num, 2,
+                                  function(x) all(round(x) == x))
                         non.cols = !int.cols
                         if (length(non.cols) > 0)
                             census.num[, non.cols] =
@@ -195,8 +206,7 @@ clean.data =
                 ## "clean.num" starts here.
                 check =
                     function(type, a, b)
-                        sapply(type,
-                               function(x) identical(x, a) | identical(x, b))
+                        sapply(type, function(x) x == a | x == b)
                 ii.num = check(type, "float", "integer")
                 jj.num = !ii.num
                 which.num = which(ii.num)
@@ -210,7 +220,8 @@ clean.data =
                 ##  Outliers
                 ii.outs =
                     unlist(apply(census.num, 2,
-                                 function(x) which(abs(x) > 5 * mean(x))))
+                                 function(x)
+                                     which(abs(x) > 5 * mean(x))))
                 if (length(ii.outs) > 0) {
                     outs = handle.outs(census, census.num, ii.outs)
                     census = outs$census
@@ -236,47 +247,51 @@ clean.data =
         
         ##  Outer function 
         function(data, vars) {
-
+            require(RMySQL)
             ##  Extract data and variable tables.
             dat.tab = get.table(table = data)
             var.tab = as.matrix(read.csv(paste0("data/", vars)))
 
             ##  Variable handling.
-            var.col = c("variable", "question", "unit", "type", "category")
+            var.col =
+                c("variable", "question", "unit", "type", "category")
             if (anyNA(match(var.col, colnames(var.tab))))
-                stop("There was a problem with accessing the variable table.")
+                stop("There was a problem with accessing the table.")
 
-            ##  We extract the columns we need from the variable information
-            ##  spreadsheet and store them as a character matrix. Note that
-            ##  we pull the third column and store it separately as a vector
-            ##  named "type" later on, since this is repeatedly updated by
-            ##  subsequent calls to helper functions.
+            ##  We extract the columns we need from the variable
+            ##  information spreadsheet and store them as a character
+            ##  matrix. Note that we pull the third column and store
+            ##  it separately as a vector named "type" later on, since
+            ##  this is repeatedly updated by subsequent calls to
+            ##  helper functions.
             vars = extract.cols(var.col[1], var.tab, label = "label")
             info =
                 sapply(var.col[2:4],
                        function(x) extract.cols(x, data = var.tab))
             type = info[, 3]
             
-            ##  Extract the desired columns (provided by "vars"), then check
-            ##  if all the column names actually match.
+            ##  Extract the desired columns (provided by "vars"), then
+            ##  check if all the column names actually match.
             census = dat.tab[, vars]
             k = ncol(census)
             if (anyNA(match(vars, colnames(census))))
                 stop("Column name mismatch!")
             
-            ##  Generate all the labels, including row labels, unit info, as
-            ##  well as help texts displayed above graphical output in the
-            ##  output panel of the CAS app.
+            ##  Generate all the labels, including row labels, unit
+            ##  info, as well as help texts displayed above graphical
+            ##  output in the output panel of the CAS app.
             labels = gen.labs(var.tab, var.col, vars, info)
 
-            ##  Clean character values. Note that "type" is updated here since
-            ##  some columns may have been removed during the cleaning process.
+            ##  Clean character values. Note that "type" is updated
+            ##  here since some columns may have been removed during
+            ##  the cleaning process.
             chars = clean.char(census, type, k)
             type = chars$type
             census = chars$census
             
-            ##  Clean numeric values. Note that "type" is updated here since
-            ##  some columns may have been removed during the cleaning process.
+            ##  Clean numeric values. Note that "type" is updated here
+            ##  since some columns may have been removed during the
+            ##  cleaning process.
             nums = clean.num(census, type, k)
 
             ##  Output
@@ -295,4 +310,18 @@ census2015 = clean.data("response2015", "var2015.csv")
 census2013 = clean.data("response2013", "var2013.csv")
 census2011 = clean.data("response2011tidy", "var2011.csv")
 census2009 = clean.data("response2009tidy3", "var2009.csv")
+
+###  Save time.
+all = list(census2015, census2013, census2011, census2009)
+lab = paste0(seq(2015, 2009, by = -2), ".Rda")
+n = length(all)
+
+lapply(1:n,
+       function(i) 
+           lapply(all[i], function(x) saveRDS(x, file = lab[i])))
+
+census2015 = readRDS("2015.Rda")
+census2013 = readRDS("2013.Rda")
+census2011 = readRDS("2011.Rda")
+census2009 = readRDS("2009.Rda")
 
