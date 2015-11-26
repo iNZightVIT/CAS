@@ -129,9 +129,9 @@ server =
                     if (identical(length(input$vars), 1L)) 
                         vals$freq = oneway(vals$cols, input$vars,
                             vals$lvls, vals$type, vals$labs)
-                    else                     
+                    else 
                         vals$freq = twoway(vals$cols, input$vars,
-                            vals$lvls, vals$type, vals$labs)
+                            vals$lvls, vals$type, vals$labs)                    
                 }
             })
         })
@@ -162,6 +162,7 @@ server =
 
         output$table = renderDataTable({
             validate(need(try(length(input$vars) >= 1), ""))
+            print(vals$freq$data)
             DT::datatable(
                 vals$freq$data,
                 class = "cell-border compact stripe",
@@ -177,7 +178,7 @@ server =
                          'color': '#4A4A4A',
                          'font-weight': 'bold'});",
                         "}"),                    
-                    pageLength = 3,
+                    ## pageLength = 3,
                     ordering = FALSE,
                     bautowidth = FALSE,
                     autowidth = FALSE,

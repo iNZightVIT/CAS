@@ -312,16 +312,16 @@ census2011 = clean.data("response2011tidy", "var2011.csv")
 census2009 = clean.data("response2009tidy3", "var2009.csv")
 
 ###  Save time.
-all = list(census2015, census2013, census2011, census2009)
-lab = paste0(seq(2015, 2009, by = -2), ".Rda")
-n = length(all)
+## all = list(census2015, census2013, census2011, census2009)
+## lab = paste0(seq(2015, 2009, by = -2), ".Rda")
+## n = length(all)
 
-lapply(1:n,
-       function(i) 
-           lapply(all[i], function(x) saveRDS(x, file = lab[i])))
+## lapply(1:n,
+##        function(i) 
+##            lapply(all[i], function(x) saveRDS(x, file = lab[i])))
 
-census2015 = readRDS("2015.Rda")
-census2013 = readRDS("2013.Rda")
-census2011 = readRDS("2011.Rda")
-census2009 = readRDS("2009.Rda")
+## census2015 = readRDS("2015.Rda")
+## census2013 = readRDS("2013.Rda")
+## census2011 = readRDS("2011.Rda")
+## census2009 = readRDS("2009.Rda")
 
