@@ -283,7 +283,8 @@ server =
                 ##  Check 1.
                 validate(
                     need(try(length(x) >= 1),
-                         paste0("\nPlease select a variable to create a ", text)))
+                      paste0("\nPlease select a variable to create a ",
+                             text)))
 
                 ##  Extract parameters.
                 unit = vals$unit
@@ -307,7 +308,8 @@ server =
                         vals$units = add.text2("Variable: ", labs,
                             unit[[grps]][vars])
                         HTML(paste(title, "<hr>",
-                                   quest, vals$group, vals$units), "<br>")
+                                   quest, vals$group, vals$units),
+                             "<br>")
                     } else {
                         title = add.title(desc2)
                         quest1 = add.text1("Question 1: ",

@@ -38,6 +38,7 @@ Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredie
 - Consider adding *Advanced* tab for customized table/plot;
 - Change cleaning structure so that less data is read in from db;
 - Set appropriate boundary points for numeric variables;
+- Ordering of factor levels - needs rethinking;
 - ~~Change table load structure for speed up;~~
 - ~~Fix table resize issue (interactivity lost);~~
 - ~~Add *remove* button for variables;~~

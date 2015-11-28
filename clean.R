@@ -165,10 +165,10 @@ clean.data =
                                          gsub(pattern, "",
                                               lvls))                
                                 if (any(nchar(lvls) > 11)) {
-                                    splits =
-                                        lapply(lvls,
-                                               function(x)
-                                                   unlist(strsplit(x, sep)))
+                                    splits = lapply(lvls,
+                                                   function(x)
+                                                    unlist(
+                                                      strsplit(x, sep)))
                                     splits =
                                         sapply(unlist(splits), long.num)
                                     lefts = c(TRUE, FALSE)
@@ -310,6 +310,8 @@ census2015 = clean.data("response2015", "var2015.csv")
 census2013 = clean.data("response2013", "var2013.csv")
 census2011 = clean.data("response2011tidy", "var2011.csv")
 census2009 = clean.data("response2009tidy3", "var2009.csv")
+## census2007 = clean.data("response2007", "var2007.csv")
+## census2005 = clean.data("response2005", "var2005.csv")
 
 ###  Save time.
 ## all = list(census2015, census2013, census2011, census2009)
