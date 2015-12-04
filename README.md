@@ -1,5 +1,5 @@
 <h4> Census Viewer </h4>
-<h6> Last Updated: November 27, 2015. </h6>
+<h6> Last Updated: December 4, 2015. </h6>
 
 <h5> Introduction </h5>
 This repository hosts a web-based application that displays a table of counts and an interactive bar chart based on real census data collected from secondary schools around New Zealand. The app can be accessed via the following link: http://docker.stat.auckland.ac.nz/spawn/?application=cas. 
@@ -42,7 +42,7 @@ Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredie
 - [x] Change cleaning structure so that less data is read in from db;
 - [x] Change table load structure for speed up;
 - [x] Fix table resize issue (interactivity lost);
-- [x] Add *remove* button for variables];
+- [x] Add *remove* button for variables;
 
 <h5> Update History </h5>;
 - ~~Fix empty character string bug;~~
