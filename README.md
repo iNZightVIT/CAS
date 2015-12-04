@@ -35,14 +35,14 @@ Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredie
 - [ ] Hack table so users can edit it directly;
 - [ ] Add screenshots/flash to help.md, incl. adding/removing bars;
 - [ ] Add feedback form;
-- [ ] Consider adding *Advanced* tab for customized table/plot;
+- [ ] Consider adding *Advanced* tab for customized tables/plots;
 - [ ] Set appropriate boundary points for numeric variables;
 - [ ] Ordering of factor levels - needs rethinking
 - [x] Automated update process (DockerHub);
 - [x] Change cleaning structure so that less data is read in from db;
 - [x] Change table load structure for speed up;
 - [x] Fix table resize issue (interactivity lost);
-- [x] Add *remove* button for variables;~~
+- [x] Add *remove* button for variables];
 
 <h5> Update History </h5>;
 - ~~Fix empty character string bug;~~
