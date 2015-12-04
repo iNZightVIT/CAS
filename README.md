@@ -44,7 +44,7 @@ Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredie
 - [x] Fix table resize issue (interactivity lost);
 - [x] Add *remove* button for variables;
 
-<h5> Update History </h5>;
+<h5> Update History </h5>
 - ~~Fix empty character string bug;~~
 - ~~Added 2009 and 2011 tables (with recycled variables);~~
 - ~~Clean up nvd3 to avoid label overlapping;~~
