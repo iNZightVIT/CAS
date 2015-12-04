@@ -30,18 +30,21 @@ shiny::runApp("path/to/app/directory")
 
 Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
-<h5> Development Notes </h5>
-- Make it possible to "swap" x and y;
-- Hack table so users can edit it directly;
-- Add screenshots/flash to help.md, incl. adding/removing bars;
-- Add feedback form;
-- Consider adding *Advanced* tab for customized table/plot;
-- Change cleaning structure so that less data is read in from db;
-- Set appropriate boundary points for numeric variables;
-- Ordering of factor levels - needs rethinking;
-- ~~Change table load structure for speed up;~~
-- ~~Fix table resize issue (interactivity lost);~~
-- ~~Add *remove* button for variables;~~
+<h5> Recent Updates </h5>
+- [ ] Make it possible to "swap" x and y;
+- [ ] Hack table so users can edit it directly;
+- [ ] Add screenshots/flash to help.md, incl. adding/removing bars;
+- [ ] Add feedback form;
+- [ ] Consider adding *Advanced* tab for customized table/plot;
+- [ ] Set appropriate boundary points for numeric variables;
+- [ ] Ordering of factor levels - needs rethinking
+- [x] Automated update process (DockerHub);
+- [x] Change cleaning structure so that less data is read in from db;
+- [x] Change table load structure for speed up;
+- [x] Fix table resize issue (interactivity lost);
+- [x] Add *remove* button for variables;~~
+
+<h5> Update History </h5>;
 - ~~Fix empty character string bug;~~
 - ~~Added 2009 and 2011 tables (with recycled variables);~~
 - ~~Clean up nvd3 to avoid label overlapping;~~
