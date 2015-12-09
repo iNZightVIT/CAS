@@ -7,13 +7,25 @@ This repository hosts a web-based application that displays a table of counts an
 This project is supported by Census At School / Tatauranga Ki Te Kura Aotearoa, which aims to be the first port of call for New Zealand educators seeking information and support for their teaching of statistics. For more information, please visit  http://new.censusatschool.org.nz/ to find a large number of original quality teaching resources including workshops, presentations, classroom activities, research papers, interactive data analysis tools, real student data sets and essential links to other statistics websites. 
 
 <h5> Instructions for Manual Testing </h5>
-To run the app *manually* in R, you can either clone the repository or download and extract the .zip file and start an R session in the directory in which the .zip was extracted. You must ensure that the following R packages are installed:
-- devtools v1.7.0;
-- DT v0.1;
-- markdown v0.7.4;
-- rCharts v0.4.5;
-- RMySQL v0.10.4;
-- shiny v0.12.1.
+To run the app *manually* in R, you can either clone the repository or download and extract the .zip file and start an R 
+session in the directory in which the .zip was extracted. You must ensure that the following R packages are installed:
+
+| Package  | Version | 
+|:---------|:--------|
+|[devtools]| 1.7.0   |
+|[DT]      | 0.1     |
+|[markdown]| 0.7.4   |
+|[rCharts] | 0.4.5   |
+|[RMySQL]  | 0.10.4  |
+|[shiny]   | 0.12.1  |
+
+[devtools]: <https://github.com/hadley/devtools>
+[DT]: <https://github.com/rstudio/DT>
+[markdown]: <https://github.com/rstudio/rmarkdown>
+[rCharts]: <https://github.com/cpi2025/rCharts>
+[RMySQL]: <https://github.com/rstats-db/RMySQL>
+[shiny]: <https://github.com/rstudio/shiny>
+
 Note that the app may not work correctly with different package versions. Below is some code that might be of some use to testers.
 
 ```{r}
@@ -30,14 +42,17 @@ shiny::runApp("path/to/app/directory")
 
 Note that the app has only been tested on R versions >= 3.2.0 ("Full of Ingredients"). Any questions, suggestions, or bug reports may be forwarded to Chris Park <cpar137@aucklanduni.ac.nz>.
 
+<h5> Work in Progress </h5>
+- [ ] Allow users to specify boundary points / conditions as raw expressions.
+- [ ] *Advanced* tab for customization.
+
 <h5> Recent Updates </h5>
 - [ ] Make it possible to "swap" x and y;
 - [ ] Hack table so users can edit it directly;
 - [ ] Add screenshots/flash to help.md, incl. adding/removing bars;
 - [ ] Add feedback form;
-- [ ] Consider adding *Advanced* tab for customized tables/plots;
-- [ ] Set appropriate boundary points for numeric variables;
-- [ ] Ordering of factor levels - needs rethinking
+- [x] Set appropriate boundary points for numeric variables;
+- [x] Ordering of factor levels - needs rethinking
 - [x] Automated update process (DockerHub);
 - [x] Change cleaning structure so that less data is read in from db;
 - [x] Change table load structure for speed up;
