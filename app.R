@@ -364,7 +364,7 @@ server =
 ##  Set up the user interface. This part is trivial.
 ui =
     fluidPage(
-        titlePanel("Census Data Viewer"),
+        titlePanel("Census at School: Data Viewer"),
         theme = "cosmo.css",
         responsive = FALSE,
         column(width = 2,
