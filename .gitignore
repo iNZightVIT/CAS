@@ -15,3 +15,4 @@ clean2.R
 ###  Miscellany.
 misc.R
 sql.R
+.app.R
