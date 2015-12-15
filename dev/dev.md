@@ -1,11 +1,11 @@
-###  Development Notes
-###
-###  Last Updated: December 16, 2015.
+####  Docker Notes
 
-Docker pull mechanism:
+##### Docker pull mechanism:
+<br>
 ![Docker Tree](./images/build.png)
 
-iNZight update structure:
+##### iNZight update structure:
+<br>
 ![iNZight Tree](./images/inzight.png)
 
 
