@@ -376,7 +376,7 @@ ui =
                    h5(helpText("Sample Size:")),                   
                    selectize.input(inputId = "sample",
                                    choices = sample.sizes),
-                   h5(helpText("Select variable(s):")),           
+                   h5(helpText("Variable(s):")),           
                    uiOutput("vars"),                   
                    downloadLink("downloadFile", h5("Download Data")),
                    modal.help("Help", "Census Viewer"))),
