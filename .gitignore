@@ -5,9 +5,6 @@
 ###  Authentication File.
 config.R
 
-###  Dev Notes.
-dev.md
-
 ###  Cleaning.
 clean.R
 clean2.R
