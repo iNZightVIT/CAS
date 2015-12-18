@@ -39,7 +39,7 @@ techskype,Technology,Skype,categorical,Yes/No,Do you have a Skype account?
 techconsole,Technology,Console,categorical,Yes/No,Do you have a gaming console?
 technone,Technology,None,categorical,Yes/No,I don't use any of the forms of technology listed.
 ethniceng,Ethnic,NZEuropean,categorical,Yes/No,Which ethnic group do you belong to?
-ethnicmri,Ethnic,Māori,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicmri,Ethnic,Maori,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicwsm,Ethnic,Samoan,categorical,Yes/No,Which ethnic group do you belong to?
 ethniccok,Ethnic,Cook Island,categorical,Yes/No,Which ethnic group do you belong to?
 ethnicton,Ethnic,Tongan,categorical,Yes/No,Which ethnic group do you belong to?
