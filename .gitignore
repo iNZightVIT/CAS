@@ -13,3 +13,5 @@ sql.R
 ###  Directories
 dev/
 data/raw
+data/var2005.csv
+data/var2007.csv
