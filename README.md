@@ -1,6 +1,6 @@
 <h4> Census Viewer / Tabulator </h4>
-<h6> Last Updated: March 11, 2016. </h6>
-
+<h7> Last Updated: March 11, 2016. </h7>
+<br>
 <h5> Introduction </h5>
 This repository hosts a web-based application that displays a table of counts and an interactive bar chart based on real census data collected from secondary schools around New Zealand. The app can be accessed via the following link: http://docker.stat.auckland.ac.nz/spawn/?application=cas. 
 
