@@ -1,15 +1,15 @@
-###  History Files.
+###  History Files
 .Rhistory
 .Rapp.history
 
-###  Authentication File.
+###  Authentication File
 config.R
 
-###  Cleaning.
-clean.R
-clean2.R
-
-###  Miscellany.
+###  Miscellany
 misc.R
 sql.R
 .app.R
+
+###  Directories
+dev/
+data/raw

@@ -1,6 +1,6 @@
 variable,category,label,type,unit,question
 gender,General,Gender,categorical,Male/Female,What is your gender?
-age,General,Age,integer,Age,What is your age?
+age,General,Age,integer,Years,What is your age?
 languages,General,Languages,integer,Number of Languages,In how many languages can you hold a conversation about a lot of every day things?
 handed,Physical,Handed,categorical,Right/Left/Ambidextrous,"Are you right-handed, left-handed, or ambidextrous?"
 height,Physical,Height,integer,Centimetres,What is your height (nearest cm)?
@@ -58,5 +58,5 @@ importwater,Importance,Water,integer,Scale of 0-100,"On a scale of 0 to 100, How
 timetravel,Time,Travel Time,integer,Means of Travel,What is the main way you usually get to school?
 timetaken,Time,Time Taken,integer,Minutes,How long does it take you to get to school (nearest minute)?
 cellmonths,Cell Phone,Months,integer,Months,How long have you had your current cell phone for?
-celltxtsend,Cell Phone,Texts Received,integer,Texts Received,About how many text messages did you receive yesterday?
-celltxtrec,Cell Phone,Texts Sent,integer,Texts Sent,About how many text messages did you send yesterday?
+celltxtsend,Cell Phone,Texts Sent,integer,Texts Sent,About how many text messages did you send yesterday?
+celltxtrec,Cell Phone,Texts Received,integer,Texts Received,About how many text messages did you receive yesterday?
