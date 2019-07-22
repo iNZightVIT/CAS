@@ -174,7 +174,7 @@ server =
                          'color': '#4A4A4A',
                          'font-weight': 'bold'});",
             "}"),                    
-          ## pageLength = 3,
+          pageLength = 500,
           ordering = FALSE,
           bautowidth = FALSE,
           autowidth = FALSE,
