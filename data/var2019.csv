@@ -1,0 +1,70 @@
+variable,category,label,type,unit,question
+year,General,Year,integer,,
+region,General,Region,categorical,,
+gender,General,Gender,categorical,Male/Female,Are you male/female?
+age,General,Age,integer,Years,What is your age in years?
+country,General,Country,categorical,,Which country were you born in?
+languages,General,Languages,integer,Number of Languages,In how many languages can you hold a conversation about a lot of every day things?
+eyecolour,Physical,Eye Colour,categorical,Colour,What is your eye colour?
+handed,Physical,Handed,categorical,Right/Left/Ambidextrous,"Are you right-handed, left-handed, or ambidextrous?"
+height,Physical,Height,integer,Centimetres,What is your height (nearest cm)?
+rightfoot,Physical,Right Foot,integer,Centimetres,"What is the length of your right foot, without a shoe (nearest cm)?"
+wrist,Physical,Wrist,integer,Centimetres,What is the circumference of your left wrist?
+leftthumb,Physical,Left Thumb ,integer,Centimetres,What is the circumference of your left thumb?
+standleftleg,Physical,Left Leg Stand,integer,Seconds,How long can you stand on your left leg with your eyes closed (nearest second)?
+reaction,Physical,Reaction,float,Seconds,How fast is your reaction time?
+memory,Physical,Memory,integer,Seconds,How quickly can you match all the pairs of pictures in the memory test (nearest second)?
+travel,School,Transport,categorical,Means of Transport,What is the main way you usually get to school?
+timetravel,School,Travel Time,integer,Minutes,How long does it usually take you to get to school?
+lunchlitter,School,Lunch Litter,categorical,Yes/No/Nolunch,Does your lunch today contain litter? Litter means one-use plastic. 
+lunchfruitvege,School,Lunch Fruit and Vegetables,integer,Number of different fresh fruit or vegetables,How many different fresh fruit or vegetables are in your lunch today?
+physicalbeforeschool,Activities,Physical Activities Before School,categorical,0/1/2/3+,"In the last week, on how many days did you do physical activity that made you get puffed, sweat or get tired? (For example: walking to school, biking, swimming, dancing, kapahaka, playing games and sport, or just running around.)"
+physicalatschool,Activities,Physical Activities At School,categorical,0/1/2/3+,"In the last week, on how many days did you do physical activity that made you get puffed, sweat or get tired? (For example: walking to school, biking, swimming, dancing, kapahaka, playing games and sport, or just running around.)"
+physicalafterschool,Activities,Physical Activities After School,categorical,0/1/2/3+,"In the last week, on how many days did you do physical activity that made you get puffed, sweat or get tired? (For example: walking to school, biking, swimming, dancing, kapahaka, playing games and sport, or just running around.)"
+physicalweekend,Activities,Physical Activities on weekend,categorical,0/1/2/3+,"In the last week, on how many days did you do physical activity that made you get puffed, sweat or get tired? (For example: walking to school, biking, swimming, dancing, kapahaka, playing games and sport, or just running around.)"
+scheduled,Activities,Scheduled Activities,float,,"In the past week, approximately how long have you spent doing scheduled activities outside of school time?"
+screentime,Activities,Screen time after school,float,,"For your most recent whole school day, how much total screen time did you have after school? Answer to the nearest 15 minutes. Enter zero if you spent no time on screens. (After school means time from the last school bell to going to sleep at night. Screen time includes: phone, tv, computer, tablet, ipod, Playstation, XBox, Nintendo, movie theatre.)"
+techphone,Technology,Cell Phone,categorical,Yes/No,Do you have a cell phone?
+techfacebook,Technology,Facebook,categorical,Yes/No,Do you have a facebook account?
+techinstagram,Technology,Instagram,categorical,Yes/No,Do you have a instagram account?
+techsnapchat,Technology,Snapchat,categorical,Yes/No,Do you have a snapchataccount?
+techreddit,Technology,Reddit,categorical,Yes/No,Do you have a reddit account?
+techyoutube,Technology,Youtube,categorical,Yes/No,Do you have a youtube channel that you upload videos to?
+technone,Technology,None of These,categorical,Yes/No,None of these?
+checkmessages,Technology,Check Messages,categorical,Always/Often/Sometimes/Rarely/Never/NA,Do you check your phone for messages or notifications as soon as you wake up?
+respondmessages,Technology,Respond Messages,categorical,Always/Often/Sometimes/Rarely/Never/NA,Do you feel as if you have to respond to messages from other people immediately?
+phoneschool,Technology,Phone School,categorical,Always/Often/Sometimes/Rarely/Never/NA,Do you take your phone to school?
+losefocus,Technology,Lose Focus,categorical,Always/Often/Sometimes/Rarely/Never/NA,Do you lose focus in school due to your phone?
+nophoneangry,Technology,No Phone Angry,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel angry?"
+nophoneanxious,Technology,No Phone Anxious,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel anxious?"
+nophonefrustrated,Technology,No Phone Frustrated,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel frustrated"
+nophonehappy,Technology,No Phone Happy,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel happy?"
+nophonelonely,Technology,No Phone Lonely,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel lonely?"
+nophonerelieved,Technology,No Phone Relieved,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel relieved?"
+nophonesad,Technology,No Phone Sad,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel sad?"
+nophoneneutral,Technology,No Phone Neutral,categorical,Yes/No,"If you were told you had to spend all weekend without your phone, would that make you feel neutral?"
+ethniceng,Ethnic,NZ European,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicmri,Ethnic,Maori,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicwsm,Ethnic,Samoan,categorical,Yes/No,Which ethnic group do you belong to?
+ethniccok,Ethnic,Cook Island,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicton,Ethnic,Tongan,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicniu,Ethnic,Niuean,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicchn,Ethnic,Chinese,categorical,Yes/No,Which ethnic group do you belong to?
+ethnicind,Ethnic,Indian,categorical,Yes/No,Which ethnic group do you belong to?
+bagweight,School,Weight,float,Kilograms,What is the weight of your school bag?
+sleeptime,Activities,Sleep Time,float,Hours,How long did you sleep last night?
+howtruecarriedaway,Opinions,Carried Away by Feelings,integer,Scale From -100 (not true) To 100 (very true),How true are these statements for you? I get carried away by my feelings.
+howtruesayfirst,Opinions,Say First Thing,integer,Scale From -100 (not true) To 100 (very true),How true are these statements for you? I say the first thing that comes into my mind without thinking enough about it.
+howtruecantstop,Opinions,Cannot Stop Myself,integer,Scale From -100 (not true) To 100 (very true),"How true are these statements for you? I can't stop myself from doing something, even if I know it is wrong."
+howtruetalkproblem,Opinions,Talk Problem,integer,Scale From -100 (not true) To 100 (very true),How true are these statements for you? I try to talk out a problem instead of fighting.
+howtruemakefriends,Opinions,Make Friends,integer,Scale From -100 (not true) To 100 (very true),How true are these statements for you? It is easy for me to make friends.
+howtruestandup,Opinions,Stand Up for Myself,integer,Scale From -100 (not true) To 100 (very true),How true are these statements for you? I know how to stand up for myself without being mean.
+climatechange,Opinions,Climate Change,categorical,urgent/future/notaproblem/dontknow,Which option best describes your opinion on climate change?
+videogame,Activities,Favourite Video Game,categorical, What is your favourite video game to play?,
+screentimephone,Opinions,Screen Time Opinion - Phone,categorical,toomuch/aboutright/toolittle/na," In your opinion, how much time do you spend in front of screens on your phone?"
+screentimemedia,Opinions,Screen Time Opinion - Social Media,categorical,toomuch/aboutright/toolittle," In your opinion, how much time do you spend in front of screens on social media?"
+screentimegames,Opinions,Screen Time Opinion - Playing Video Games,categorical,toomuch/aboutright/toolittle," In your opinion, how much time do you spend in front of screens on video games?"
+bedtime,Activities,Bed Time,Time,, About what time did you go to sleep last night?
+waketime,Activities,Wake Time,Time,, About what time did you wake up this morning?
+timehome,Activities,Time Get Home,Time,,"For your most recent whole school day, about what time did you get home from school?"
+timedinner,Activities,Time Ate Dinner,Time,,"For your most recent whole school day, about what time did you eat dinner?"

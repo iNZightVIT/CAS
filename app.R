@@ -1,7 +1,7 @@
 ###  Tabulator
 ###
 ###  Set global parameters.
-year = seq(2017, 2009, by = -2)
+year = seq(2019, 2009, by = -2)
 pkgs = c("DT", "markdown", "rCharts", "RMySQL", "shiny")
 col1 = "#5CB8E6"
 col2 = "#F5F5F5"
@@ -41,6 +41,7 @@ server =
       if (check.input(input$data)) {
         inputData =
           switch(input$data,
+                 "2019" = readRDS(paste0("./data/", "2019.Rda")),
                  "2017" = readRDS(paste0("./data/", "2017.Rda")),
                  "2015" = census2015,
                  "2013" = census2013,
