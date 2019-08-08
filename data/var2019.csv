@@ -68,3 +68,11 @@ bedtime,Activities,Bed Time,Time,, About what time did you go to sleep last nigh
 waketime,Activities,Wake Time,Time,, About what time did you wake up this morning?
 timehome,Activities,Time Get Home,Time,,"For your most recent whole school day, about what time did you get home from school?"
 timedinner,Activities,Time Ate Dinner,Time,,"For your most recent whole school day, about what time did you eat dinner?"
+howwrongalcohol,Opinions,Drink Alcohol,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think it is for someone your age to drink alcohol?
+howwrongtobacco,Opinions,Smoke Tobacco Cigarettes,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think it is for someone your age to smoke tobacco cigarettes?
+howwrongecigarette,Opinions,Smoke E-Cigarettes,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think it is for someone your age to smoke e-cigarettes?
+howwrongmarijuana,Opinions,Smoke Marijuana,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think it is for someone your age to smoke marijuana?
+howwrongparentsalcohol,Opinions,Parents Feel Drink Alcohol,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think your primary caregivers/parents feel it would be for you to drink alcohol?
+howwrongparentstobacco,Opinions,Parents Feel Smoke Tobacco Cigarettes,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think your primary caregivers/parents feel it would be for you to smoke tobacco cigarettes?
+howwrongparentsecigarette,Opinions,Parents Feel Smoke E-Cigarettes,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think your primary caregivers/parents feel it would be for you to smoke e-cigarettes?
+howwrongparentsmarijuana,Opinions,Parents Feel Smoke Marijuana,integer,Scale From -100 (not true) To 100 (very true),How wrong do you think your primary caregivers/parents feel it would be for you to smoke marijuana?

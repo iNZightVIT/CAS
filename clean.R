@@ -65,17 +65,17 @@ conc.str =
 ###  Clean missing values.
 clean.nas =
   function(data, type) {
-    ind = apply(data, 2,
-                function(x) {
-                  unique(sort(c(which(is.na(x) | is.null(x)),
-                                which(x == ""  | x == "NULL"))))
-                })
-    if (length(ind) > 0) {
-      subs = data[-unique(unlist(ind)), ]
-      if (ncol(subs) < ncol(data))
-        type = type[colnames(subs)]
-      data = subs
-    }
+#    ind = apply(data, 2,
+#                function(x) {
+#                  unique(sort(c(which(is.na(x) | is.null(x)),
+#                                which(x == ""  | x == "NULL"))))
+#                })
+#    if (length(ind) > 0) {
+#      subs = data[-unique(unlist(ind)), ]
+#      if (ncol(subs) < ncol(data))
+#        type = type[colnames(subs)]
+#      data = subs
+#    }
     list(data = data, type = type)
   }
 
@@ -107,15 +107,15 @@ clean.num =
       }
       
       ##  Handle outliers.
-      outs = apply(subs, 2, function(x) any(abs(x) > 5 * mean(x))) 
-      if (any(outs)) {
-        inds = unique(unlist(which(outs)))
-        subs = subs[-inds, ]
-        data = data[-inds, ]
-      }
+#      outs = apply(subs, 2, function(x) any(abs(x) > 5 * mean(x))) 
+#      if (any(outs)) {
+#        inds = unique(unlist(which(outs)))
+#        subs = subs[-inds, ]
+#        data = data[-inds, ]
+#      }
       
       ##  Clean decimal places.
-      ints = apply(subs, 2, function(x) all(round(x) == x))
+      ints = apply(subs, 2, function(x) all(round(x) == x, na.rm = T))
       if (!all(ints)) 
         subs[, !ints] = round(subs[, !ints], 1)
 
@@ -136,8 +136,8 @@ clean.num =
                                  include.lowest = TRUE, right = FALSE)
                     })
 
-      if (any(unlist(lapply(cuts, anyNA))))
-        stop("There has been an error in the binning process.")
+      #if (any(unlist(lapply(cuts, anyNA))))
+      #  stop("There has been an error in the binning process.")
       
       lvls = lapply(cuts,
                     function(x) {
@@ -193,8 +193,11 @@ clean.data =
   function(data, cols) {
     ##  Query database and variable file.
     require(RMySQL)
+    tab = read.csv("alldata-aug2019.csv")
+  
+    ## tab is data, var is the excel file
     tab = get.table(table = data)
-    var = as.matrix(read.csv(paste0("data/", cols)))
+    var = as.matrix(read.csv("var2019.csv"))
     
     ##  Handle variables.
     vlabs = c("variable", "question", "unit", "type", "category")
@@ -218,10 +221,10 @@ clean.data =
     clean = clean.nas(subs, type)
     type = clean$type
     subs = clean$data
-
+    #data = subs
     ##  Clean numeric columns.
     clean = clean.num(subs, type)
-
+    
     ##  Clean up on exit.
     on.exit(lapply(dbListConnections(MySQL()), dbDisconnect))
     
@@ -264,3 +267,12 @@ invisible(
 ## census2013 = readRDS("2013.Rda")
 ## census2011 = readRDS("2011.Rda")
 ## census2009 = readRDS("2009.Rda")
+
+
+result = list(data = data,
+              lvls = lvls,
+              type = type,
+              labs = labs$all.labs,
+              help = labs$help.texts,
+              unit = labs$unit.texts)
+saveRDS(result, "2019.Rda")
